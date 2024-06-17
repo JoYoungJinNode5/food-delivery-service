@@ -12,3 +12,185 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  nickname   String   @unique
+  name       String
+  address    String
+  point      Int      @default(1000000)
+  role       Role     @default(USER)
+  profileImg String?  @map("profile_img")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  review       Review[]
+  order        Order[]
+  restaurant   Restaurant?
+  refershToken RefreshToken?
+  Like         Like[]
+
+  @@map("user")
+}
+
+model RefreshToken {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @unique @map("user_id")
+  refreshToken String?  @map("refresh_token")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_token")
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  userId        Int           @map("user_id")
+  restaurantId  Int           @map("restaurant_id")
+  orderStatus   OrderStatus   @default(REQUEST) @map("order_status")
+  deliverStatus DeliverStatus @default(PREPARING) @map("deliver_status")
+
+  review        Review?
+  order_item    OrderItem[]
+  User          User            @relation(fields: [userId], references: [id])
+  Restaurant    Restaurant      @relation(fields: [restaurantId], references: [id])
+  RestaurantLog RestaurantLog[]
+
+  @@map("order")
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  menuId    Int      @map("menu_id")
+  quantity  Int      @default(1) @db.TinyInt
+  price     Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menu  Menu  @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@map("order_item")
+}
+
+model Restaurant {
+  id          Int      @id @default(autoincrement())
+  managerId   Int      @unique @map("manager_id")
+  name        String   @map("name")
+  image       String
+  category    Category @map("category")
+  address     String
+  content     String   @db.Text
+  openingTime DateTime @map("opening_time")
+  createdAt   DateTime @map("created_at")
+  updatedAt   DateTime @map("updated_at")
+
+  user           User            @relation(fields: [managerId], references: [id], onDelete: Cascade)
+  like           Like[]
+  order          Order[]
+  menu           Menu[]
+  restaurant_log RestaurantLog[]
+  review         Review[]
+  userId         Int
+
+  @@map("restaurant")
+}
+
+model Like {
+  userId       Int        @map("user_id")
+  restaurantId Int        @map("restaurant_id")
+  User         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@id([userId, restaurantId])
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("user_id")
+  menuId       Int      @map("menu_id")
+  orderId      Int      @unique @map("order_id")
+  restaurantId Int      @map("restaurant_id")
+  content      String?  @db.Text
+  rating       Int      @db.TinyInt
+  createdAt    DateTime @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  image      ReivewImage[]
+  restaurant Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  order      Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("review")
+}
+
+model ReivewImage {
+  id       Int    @id @default(autoincrement())
+  reviewId Int    @map("review_id")
+  imageUrl String @map("image_url")
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@map("reivew_image")
+}
+
+model Menu {
+  id           Int      @id @default(autoincrement())
+  restaurantId Int      @map("restaurant_id")
+  name         String   @map("name")
+  price        Int
+  image        String
+  content      String   @db.Text
+  createdAt    DateTime @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  restaurant Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  OrderItem  OrderItem[]
+
+  @@map("menu")
+}
+
+model RestaurantLog {
+  id           Int      @id @default(autoincrement())
+  orderId      Int      @map("order_id")
+  restaurantId Int      @map("restaurant_id")
+  price        Int
+  totalPrice   Int      @map("total_price")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  order      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@map("restaurant_log")
+}
+
+enum Role {
+  USER
+  MANAGER
+  ADMIN
+}
+
+enum Category {
+  CHICKEN
+  PIZZA
+  KOREAN
+  CHINESE
+  JAPANESE
+  BURGER
+  PORK
+}
+
+enum OrderStatus {
+  REQUEST
+  RECEPTION
+}
+
+enum DeliverStatus {
+  PREPARING
+  DELIVERING
+  COMPLETE
+}
