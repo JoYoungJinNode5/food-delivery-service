@@ -1,4 +1,4 @@
-import { MIN_PASSWORD_LENGTH } from './auth.constant.js';
+import { MIN_PASSWORD_LENGTH, MIN_RESUME_LENGTH } from './auth.constant.js';
 
 export const MESSAGES = {
   AUTH: {

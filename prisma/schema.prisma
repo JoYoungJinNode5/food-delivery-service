@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -67,7 +67,7 @@ model OrderItem {
   id        Int      @id @default(autoincrement())
   orderId   Int      @map("order_id")
   menuId    Int      @map("menu_id")
-  quantity  Int      @default(1) @db.TinyInt
+  quantity  Int      @default(1)
   price     Int
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -106,6 +106,7 @@ model Like {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@id([userId, restaurantId])
+  @@map("like")
 }
 
 model Review {
@@ -115,7 +116,7 @@ model Review {
   orderId      Int      @unique @map("order_id")
   restaurantId Int      @map("restaurant_id")
   content      String?  @db.Text
-  rating       Int      @db.TinyInt
+  rating       Int
   createdAt    DateTime @map("created_at")
   updatedAt    DateTime @map("updated_at")
 
