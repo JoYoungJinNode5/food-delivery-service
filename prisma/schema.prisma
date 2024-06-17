@@ -30,7 +30,7 @@ model User {
   order        Order[]
   restaurant   Restaurant?
   refershToken RefreshToken?
-  Like         Like[]
+  like         Like[]
 
   @@map("user")
 }
@@ -55,10 +55,10 @@ model Order {
   deliverStatus DeliverStatus @default(PREPARING) @map("deliver_status")
 
   review        Review?
-  order_item    OrderItem[]
-  User          User            @relation(fields: [userId], references: [id])
-  Restaurant    Restaurant      @relation(fields: [restaurantId], references: [id])
-  RestaurantLog RestaurantLog[]
+  orderItem     OrderItem[]
+  user          User            @relation(fields: [userId], references: [id])
+  restaurant    Restaurant      @relation(fields: [restaurantId], references: [id])
+  restaurantLog RestaurantLog[]
 
   @@map("order")
 }
@@ -89,13 +89,12 @@ model Restaurant {
   createdAt   DateTime @map("created_at")
   updatedAt   DateTime @map("updated_at")
 
-  user           User            @relation(fields: [managerId], references: [id], onDelete: Cascade)
-  like           Like[]
-  order          Order[]
-  menu           Menu[]
-  restaurant_log RestaurantLog[]
-  review         Review[]
-  userId         Int
+  user          User            @relation(fields: [managerId], references: [id], onDelete: Cascade)
+  like          Like[]
+  order         Order[]
+  menu          Menu[]
+  restaurantLog RestaurantLog[]
+  review        Review[]
 
   @@map("restaurant")
 }
@@ -103,8 +102,8 @@ model Restaurant {
 model Like {
   userId       Int        @map("user_id")
   restaurantId Int        @map("restaurant_id")
-  User         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   @@id([userId, restaurantId])
 }
@@ -120,10 +119,10 @@ model Review {
   createdAt    DateTime @map("created_at")
   updatedAt    DateTime @map("updated_at")
 
-  image      ReivewImage[]
-  restaurant Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  order      Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewimage ReivewImage[]
+  restaurant  Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("review")
 }
@@ -149,7 +148,7 @@ model Menu {
   updatedAt    DateTime @map("updated_at")
 
   restaurant Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  OrderItem  OrderItem[]
+  orderItem  OrderItem[]
 
   @@map("menu")
 }
