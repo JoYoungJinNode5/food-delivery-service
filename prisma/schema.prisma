@@ -26,7 +26,6 @@ model User {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  review       Review[]
   order        Order[]
   restaurant   Restaurant?
   refershToken RefreshToken?
@@ -67,7 +66,7 @@ model OrderItem {
   id        Int      @id @default(autoincrement())
   orderId   Int      @map("order_id")
   menuId    Int      @map("menu_id")
-  quantity  Int      @default(1) @db.TinyInt
+  quantity  Int      @default(1)
   price     Int
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -94,7 +93,6 @@ model Restaurant {
   order         Order[]
   menu          Menu[]
   restaurantLog RestaurantLog[]
-  review        Review[]
 
   @@map("restaurant")
 }
@@ -109,20 +107,15 @@ model Like {
 }
 
 model Review {
-  id           Int      @id @default(autoincrement())
-  userId       Int      @map("user_id")
-  menuId       Int      @map("menu_id")
-  orderId      Int      @unique @map("order_id")
-  restaurantId Int      @map("restaurant_id")
-  content      String?  @db.Text
-  rating       Int      @db.TinyInt
-  createdAt    DateTime @map("created_at")
-  updatedAt    DateTime @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @unique @map("order_id")
+  content   String?  @db.Text
+  rating    Int
+  createdAt DateTime @map("created_at")
+  updatedAt DateTime @map("updated_at")
 
   reviewimage ReivewImage[]
-  restaurant  Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("review")
 }
