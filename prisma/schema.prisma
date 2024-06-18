@@ -93,7 +93,6 @@ model Restaurant {
   order         Order[]
   menu          Menu[]
   restaurantLog RestaurantLog[]
-  review        Review[]
 
   @@map("restaurant")
 }
@@ -118,7 +117,6 @@ model Review {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   reviewimage ReivewImage[]
-  restaurant  Restaurant    @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("review")
