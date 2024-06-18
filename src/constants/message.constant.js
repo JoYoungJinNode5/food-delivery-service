@@ -19,6 +19,10 @@ export const MESSAGES = {
       NAME: {
         REQURIED: '이름을 입력해 주세요.',
       },
+      NICKNAME: {
+        DUPLICATED: '이미 존재하는 닉네임입니다.',
+        SUCCEED: '사용 가능한 닉네임입니다.',
+      },
       UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
       FORBIDDEN: '접근 권한이 없습니다.',
       JWT: {

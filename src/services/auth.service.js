@@ -12,15 +12,18 @@ export class AuthService {
   }
   signUp = async (email, password, passwordConfirm, nickname, name, address, profile_img) => {
     const whereCondition = { email };
-    const isExistUser = await this.userRepository.findUniqueUser(whereCondition);
+    const isExistUser = await this.userRepository.findByUser(whereCondition);
+
     // 이메일 중복체크
     if (isExistUser) {
       throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.EMAIL.DUPLICATED);
     }
+
     // 패스워드 검사
     if (password !== passwordConfirm) {
       throw new HttpError.Conflict(MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.NOT_MACHTED_WITH_PASSWORD);
     }
+
     const hashedPassword = await bcrypt.hash(password, SALT);
     const userData = await this.userRepository.createUser(email, hashedPassword, nickname, name, address, profile_img);
 
@@ -30,18 +33,26 @@ export class AuthService {
 
   signIn = async (email, password) => {
     const whereCondition = { email };
-    const user = await this.userRepository.findUniqueUser(whereCondition);
+    const user = await this.userRepository.findByUser(whereCondition);
+
+    // 회원 체크
     if (!user) {
       throw new HttpError.Unauthorized(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
     }
+
+    // 패스워드 검사
     if (!(await bcrypt.compare(password, user.password))) {
       throw new HttpError.Unauthorized(MESSAGES.AUTH.COMMON.UNAUTHORIZED);
     }
     const payload = { id: user.id };
-
+    // 토큰 생성
     const data = await this.generateAuthTokens(payload);
 
     return data;
+  };
+
+  signOut = async (userId) => {
+    await this.userRepository.signOutUser(userId);
   };
 
   generateAuthTokens = async (payload) => {
@@ -64,6 +75,9 @@ export class AuthService {
 
   checkNickname = async (nickname) => {
     const whereCondition = { nickname };
-    const isExistUser = await this.userRepository.findUniqueUser(whereCondition);
+    const user = await this.userRepository.findByUser(whereCondition);
+    if (user) {
+      throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.NICKNAME.DUPLICATED);
+    }
   };
 }

@@ -2,7 +2,7 @@ export class UserRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
-  findUniqueUser = async (whereCondition) => {
+  findByUser = async (whereCondition) => {
     const isExistUser = await this.prisma.user.findUnique({
       where: whereCondition,
     });
@@ -21,6 +21,15 @@ export class UserRepository {
       },
     });
     return userData;
+  };
+
+  signOutUser = async (userId) => {
+    await this.prisma.RefreshToken.update({
+      where: { userId },
+      data: {
+        refreshToken: null,
+      },
+    });
   };
 
   tokenUpload = async (userId, refreshToken) => {

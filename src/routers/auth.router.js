@@ -14,10 +14,11 @@ const authController = new AuthController(authService);
 // 회원가입
 authRouter.post('/sign_up', authController.signUp);
 // 중복 닉네임 체크
-authRouter.post('/check-nickname', authController.checkNickname);
+authRouter.post('/check_nickname', authController.checkNickname);
 // 로그인
 authRouter.post('/sign_in', authController.signIn);
 // 토큰 재발급
 authRouter.post('/tokens', refreshTokenMiddleware(userRepository), authController.reloadToken);
-
+// 로그아웃
+authRouter.post('/sign_out', refreshTokenMiddleware(userRepository), authController.signOut);
 export { authRouter };

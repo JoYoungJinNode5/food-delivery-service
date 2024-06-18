@@ -34,7 +34,7 @@ export const accessTokenMiddleware = (userRepository) => {
       const decodedToken = jwt.verify(token, ACCESS_TOKEN_SECRET_KEY);
       const userId = decodedToken.id;
       const whereCondition = { id: userId };
-      const user = await userRepository.findUniqueUser(whereCondition);
+      const user = await userRepository.findByUser(whereCondition);
 
       if (!user) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({

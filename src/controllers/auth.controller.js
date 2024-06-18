@@ -44,6 +44,21 @@ export class AuthController {
       next(error);
     }
   };
+  signOut = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const userId = user.id;
+
+      await this.authService.signOut(userId);
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.AUTH.SIGN_OUT.SUCCEED,
+        data: { id: userId },
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   reloadToken = async (req, res, next) => {
     try {
@@ -56,14 +71,22 @@ export class AuthController {
         message: MESSAGES.AUTH.TOKEN.SUCCEED,
         data,
       });
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   };
 
   checkNickname = async (req, res, next) => {
     try {
-      const data = await this.authService.checkNickname();
-    } catch (error) {}
+      const { nickname } = req.body;
+      await this.authService.checkNickname(nickname);
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.AUTH.COMMON.NICKNAME.SUCCEED,
+        data: { nickname },
+      });
+    } catch (error) {
+      next(error);
+    }
   };
 }
