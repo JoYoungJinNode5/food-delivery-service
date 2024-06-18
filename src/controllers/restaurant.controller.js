@@ -9,13 +9,17 @@ export class RestaurantController {
 	// 업장 생성 컨트롤러
 	createRestaurant = async (req, res, next) => {
 		try {
-			const { name, category, address, content } = req.body;
+			const { name, category, address, content, image } = req.body;
 
 			const createdRestaurant = await this.restaurantService.createRestaurant(
-				name, category, address, content
+				name, category, address, content, image
 			);
 
-			return res.status(HTTP_STATUS.CREATED).json({ data: createdRestaurant });
+			return res.status(HTTP_STATUS.CREATED).json({
+				status: HTTP_STATUS.CREATED,
+				message: MESSAGES.RESTAURANT.CREATE.SUCCEED,
+				data: createdRestaurant
+			});
 
 		} catch (err) {
 			next(err);
@@ -26,11 +30,18 @@ export class RestaurantController {
 	updateRestaurant = async (req, res, next) => {
 		try {
 			const { name, category, address, content } = req.body;
+			const { restaurantId } = req.params;
+
+
 			const updatedRestaurant = await this.restaurantService.updateRestaurant(
-				name, category, address, content
+				name, category, address, content, restaurantId
 			);
 
-			return res.status(HTTP_STATUS.OK).json({ data: updatedRestaurant });
+			return res.status(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: MESSAGES.RESTAURANT.UPDATE.SUCCEED,
+				data: updatedRestaurant
+			});
 
 		} catch (err) {
 			next(err);
@@ -44,7 +55,11 @@ export class RestaurantController {
 
 			const restaurant = await this.restaurantService.findRestaurantById(restaurantId);
 
-			return res.status(HTTP_STATUS.OK).json({ data: restaurant });
+			return res.status(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: MESSAGES.RESTAURANT.READ_DETAIL.SUCCEED,
+				data: restaurant
+			});
 		} catch (err) {
 			next(err);
 		}
@@ -55,7 +70,28 @@ export class RestaurantController {
 		try {
 			const restaurants = await this.restaurantService.findAllRestaurants();
 
-			return res.status(HTTP_STATUS.OK).json({ data: restaurants });
+			return res.status(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: MESSAGES.RESTAURANT.READ.SUCCEED,
+				data: restaurants
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	// 업장 삭제
+	deleteRestaurant = async (req, res, next) => {
+		try {
+			const { restaurantId } = req.params;
+			const deletedRestaurant = await this.restaurantService.deleteRestaurantById(restaurantId);
+
+			return res.status(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: MESSAGES.RESTAURANT.DELETE.SUCCEED,
+				data: deletedRestaurant
+			});
+
 		} catch (err) {
 			next(err);
 		}

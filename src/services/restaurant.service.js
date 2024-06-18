@@ -6,43 +6,42 @@ export class RestaurantService {
 	restaurantRepository = new RestaurantRepository();
 
 	// 업장 생성 서비스
-	createRestaurant = async (name, category, address, content) => {
+	createRestaurant = async (name, category, address, content, image) => {
 		const createdRestaurant = await this.restaurantRepository.createdRestaurant(
-			name, category, address, content
+			name, category, address, content, image
 		);
-
-		if (!createdRestaurant) {
-			throw new Error('업장 생성 오류 발생');
-		}
 
 		return {
 			id: createdRestaurant.id,
 			name: createdRestaurant.name,
+			category: createdRestaurant.category,
 			address: createdRestaurant.address,
 			content: createdRestaurant.content,
+			image: createdRestaurant.image,
 			createdAt: createdRestaurant.createdAt,
-			updateAt: createdRestaurant.updateAt,
+			updateAt: createdRestaurant.updatedAt,
 		};
 	};
 
 	// 업장 정보 수정 서비스
-	updateRestaurant = async (name, category, address, content) => {
+	updateRestaurant = async (name, category, address, content, restaurantId) => {
 
 		const updatedRestaurant = await this.restaurantRepository.updatedRestaurant(
-			name, category, address, content
+			name, category, address, content, restaurantId
 		);
 
 		if (!updatedRestaurant) {
-			throw new Error('업장 정보 수정 오류 발생');
+			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
 		}
 
 		return {
 			id: updatedRestaurant.id,
 			name: updatedRestaurant.name,
 			category: updatedRestaurant.category,
+			address: updatedRestaurant.address,
 			content: updatedRestaurant.content,
 			createdAt: updatedRestaurant.createdAt,
-			updatedAt: updatedRestaurant.updateAt,
+			updatedAt: updatedRestaurant.updatedAt,
 
 		};
 	};
@@ -51,6 +50,9 @@ export class RestaurantService {
 	findRestaurantById = async (restaurantId) => {
 		const restaurant = await this.restaurantRepository.findRestaurantById(restaurantId);
 
+		if (!restaurant) {
+			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
+		}
 		return {
 			id: restaurant.id,
 			name: restaurant.name,
@@ -58,7 +60,7 @@ export class RestaurantService {
 			address: restaurant.address,
 			content: restaurant.content,
 			createdAt: restaurant.createdAt,
-			updateAt: restaurant.updateAt,
+			updateAt: restaurant.updatedAt,
 		};
 	}
 
@@ -66,7 +68,7 @@ export class RestaurantService {
 	findAllRestaurants = async () => {
 		const restaurants = await this.restaurantRepository.findAllRestaurants();
 
-		restaurants.map((restaurant) => {
+		return restaurants.map((restaurant) => {
 			return {
 				id: restaurant.id,
 				name: restaurant.name,
@@ -78,5 +80,17 @@ export class RestaurantService {
 			};
 		});
 	}
+
+	// 업장 삭제 서비스
+	deleteRestaurantById = async (restaurantId) => {
+		const deletedRestaurant = await this.restaurantRepository.deleteRestaurantById(restaurantId);
+
+		if (!deletedRestaurant) {
+			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
+		}
+		return {
+			id: deletedRestaurant.id,
+		};
+	};
 
 }

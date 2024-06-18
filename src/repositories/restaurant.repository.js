@@ -3,10 +3,10 @@ import { prisma } from "../utils/prisma.util.js";
 export class RestaurantRepository {
 
 	// 업장 생성
-	createdRestaurant = async (name, category, address, content) => {
+	createdRestaurant = async (name, category, address, content, image) => {
 		const createdRestaurant = await prisma.restaurant.create({
 			data: {
-				name, category, address, content,
+				name, category, address, content, image
 			},
 		});
 
@@ -14,8 +14,11 @@ export class RestaurantRepository {
 	};
 
 	// 업장 수정
-	updatedRestaurant = async (name, category, address, content) => {
+	updatedRestaurant = async (name, category, address, content, restaurantId) => {
 		const updatedRestaurant = await prisma.restaurant.update({
+			where: {
+				id: +restaurantId,
+			},
 			data: {
 				name,
 				category,
@@ -42,4 +45,14 @@ export class RestaurantRepository {
 
 		return restaurants;
 	};
+
+	// 업장 삭제
+	deleteRestaurantById = async (restaurantId) => {
+		const deletedrestaurant = await prisma.restaurant.delete({
+			where: {
+				id: +restaurantId,
+			},
+		});
+		return deletedrestaurant;
+	}
 }
