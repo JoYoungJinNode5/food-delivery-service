@@ -30,6 +30,37 @@ export class AuthController {
     }
   };
 
+  signIn = async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+      const data = await this.authService.signIn(email, password);
+
+      return res.status(HTTP_STATUS.OK).json({
+        status: res.statusCode,
+        message: MESSAGES.AUTH.SIGN_IN.SUCCEED,
+        data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  reloadToken = async (req, res, next) => {
+    try {
+      const user = req.user;
+      const payload = { id: user.id };
+
+      const data = await this.authService.generateAuthTokens(payload);
+
+      return res.status(HTTP_STATUS.OK).json({
+        message: MESSAGES.AUTH.TOKEN.SUCCEED,
+        data,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   checkNickname = async (req, res, next) => {
     try {
       const data = await this.authService.checkNickname();
