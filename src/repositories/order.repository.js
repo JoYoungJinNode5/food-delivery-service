@@ -20,18 +20,10 @@ export class OrderRepository {
           deliverStatus,
           totalPrice,
           address,
-          orderItems: {
-            create: orderItems.map((item) => ({
-              productId: item.productId,
-              quantity: item.quantity,
-              price: item.price,
-            })),
-          },
-        },
-        include: {
-          orderItems: true,
         },
       });
+
+      await this.orderItemRepository.createOrderItems(order.id, orderItems);
 
       // restaurantLog 업데이트
       await prisma.restaurantLog.create({
@@ -79,14 +71,6 @@ export class OrderRepository {
         orderStatus,
         deliverStatus,
       },
-    });
-  }
-}
-
-export class MenuRepository {
-  async getMenuById(menuId) {
-    return prisma.menu.findUnique({
-      where: { id: menuId },
     });
   }
 }

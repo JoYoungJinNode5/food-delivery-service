@@ -1,6 +1,7 @@
 import express from 'express';
 import { prisma } from '../utils/prisma.util.js';
 import { OrderRepository } from '../repositories/order.repository.js';
+import { OrderItemRepository } from '../repositories/order-item.repository.js';
 // import { MenuRepository } from '../repositories/order.repository.js'
 import { OrderService } from '../services/order.service.js';
 import { OrderController } from '../controllers/order.controller.js';
@@ -9,7 +10,9 @@ import { UserRepository } from '../repositories/user.repository.js';
 
 const orderRouter = express.Router();
 const userRepository = new UserRepository(prisma);
-const orderRepository = new OrderRepository();
+const orderItemRepository = new OrderItemRepository(); // order-item 레포지토리 인스턴스 추가
+const orderRepository = new OrderRepository(orderItemRepository); // order-item 레포지토리 주입
+// const menuRepository = new MenuRepository(); // 메뉴 레포지토리 인스턴스 추가
 const orderService = new OrderService(orderRepository, userRepository); //OrderService 괄호 안에 menuRepository 추가
 const orderController = new OrderController(orderService);
 
