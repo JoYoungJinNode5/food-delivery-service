@@ -1,5 +1,7 @@
 import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
+import { prisma } from '../utils/prisma.util.js';
+import { Prisma } from '@prisma/client';
 
 export class ReviewService {
   constructor(reviewRepository, reviewImageRepository, orderRepository) {
@@ -8,21 +10,42 @@ export class ReviewService {
     this.orderRepository = orderRepository;
   }
 
+  createReviewResponseData = (review, images) => {
+    return {
+      id: review.id,
+      nickname: review.order.user.nickname,
+      content: review.content,
+      images: images,
+      rating: review.rating,
+    };
+  };
+
   createReview = async (orderId, content, images, rating) => {
     const existOrder = await this.orderRepository.findById(+orderId);
     if (!existOrder) {
       throw new HttpError.NotFound(MESSAGES.ORDER.COMMON.NOT_FOUND);
     }
 
-    //TODO : 트랜잭션 추가
-    const review = await this.reviewRepository.createReview(orderId, content, rating);
-    if (images) {
-      for (const image of images) {
-        await this.reviewImageRepository.createReviewImage(+review.id, decodeURIComponent(image.location));
-      }
-    }
+    const [createdReview, createdReviewImage] = await prisma.$transaction(
+      async (tx) => {
+        const createdReview = await this.reviewRepository.createReview(tx, orderId, content, rating);
+        let createdReviewImage = [];
+        if (images) {
+          for (const image of images) {
+            createdReviewImage.push(
+              await this.reviewImageRepository.createReviewImage(tx, +createdReview.id, image.location),
+            );
+          }
+        }
 
-    return review;
+        return [createdReview, createdReviewImage];
+      },
+      {
+        isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+      },
+    );
+
+    return this.createReviewResponseData(createdReview, createdReviewImage);
   };
 
   updateReview = async (reviewId, content, images, rating) => {
@@ -31,7 +54,27 @@ export class ReviewService {
       throw new HttpError.NotFound(MESSAGES.REVIEW.COMMON.NOT_FOUND);
     }
 
-    return await this.reviewRepository.updateReview(+reviewId, content, rating);
+    const [updatedReview, updatedReviewImage] = await prisma.$transaction(
+      async (tx) => {
+        const updatedReview = await this.reviewRepository.updateReview(tx, +reviewId, content, rating);
+
+        await this.reviewImageRepository.deleteByReviewId(tx, +reviewId);
+
+        let updatedReviewImage = [];
+        if (images) {
+          for (const image of images) {
+            updatedReviewImage.push(await this.reviewImageRepository.createReviewImage(tx, +reviewId, image.location));
+          }
+        }
+
+        return [updatedReview, updatedReviewImage];
+      },
+      {
+        isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+      },
+    );
+
+    return this.createReviewResponseData(updatedReview, updatedReviewImage);
   };
 
   deleteReview = async (reviewId) => {
@@ -47,12 +90,12 @@ export class ReviewService {
 
   findReviews = async (restaurantId) => {
     const reviews = await this.reviewRepository.findAll(restaurantId);
-    return reviews.map((review) => ({
-      id: review.id,
-      nickname: review.order.user.nickname,
-      content: review.content,
-      image: review.reviewimage,
-      rating: review.rating,
-    }));
+
+    return await Promise.all(
+      reviews.map(async (review) => {
+        const reviewImages = await this.reviewImageRepository.findByReviewId(review.id);
+        return this.createReviewResponseData(review, reviewImages);
+      }),
+    );
   };
 }

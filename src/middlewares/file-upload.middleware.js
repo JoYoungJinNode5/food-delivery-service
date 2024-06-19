@@ -79,4 +79,12 @@ const fileUploadMiddleware = (folderName, jsonFieldName = 'data') => {
   };
 };
 
+const fileDeleteMiddleware = (folderName) => {
+  const upload = createMulter(folderName).array(IMAGE_PARAM_NAME, setMaxFile(folderName));
+
+  return (req, res, next) => {
+    s3Client.deleteObject;
+  };
+};
+
 export { fileUploadMiddleware };
