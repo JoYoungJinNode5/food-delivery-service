@@ -47,37 +47,22 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
-  USERS: {
-    READ_ME: {
-      SUCCEED: '내 정보 조회에 성공했습니다.',
-    },
-  },
-  RESUMES: {
-    COMMON: {
-      TITLE: {
-        REQUIRED: '제목을 입력해 주세요.',
-      },
-      CONTENT: {
-        REQUIRED: '자기소개를 입력해 주세요.',
-        MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
-      },
-      NOT_FOUND: '이력서가 존재하지 않습니다.',
-    },
+  ORDERS: {
     CREATE: {
-      SUCCEED: '이력서 생성에 성공했습니다.',
+      SUCCEED: '주문 생성에 성공했습니다.',
     },
-    READ_LIST: {
-      SUCCEED: '이력서 목록 조회에 성공했습니다.',
+    CANCEL: {
+      SUCCEED: '주문 취소에 성공했습니다.',
     },
     READ_DETAIL: {
-      SUCCEED: '이력서 상세 조회에 성공했습니다.',
+      SUCCEED: '주문 상세 조회에 성공했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '주문 목록 조회에 성공했습니다.',
     },
     UPDATE: {
-      SUCCEED: '이력서 수정에 성공했습니다.',
-      NO_BODY_DATA: '수정 할 정보를 입력해 주세요.',
+      SUCCEED: '주문 상태 변경에 성공했습니다.',
     },
-    DELETE: {
-      SUCCEED: '이력서 삭제에 성공했습니다.',
-    },
+    INSUFFICIENT_POINTS: '포인트가 부족합니다.',
   },
 };
