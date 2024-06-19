@@ -51,6 +51,7 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
+
   USERS: {
     READ_ME: {
       SUCCEED: '내 정보 조회에 성공했습니다.',
@@ -67,27 +68,27 @@ export const MESSAGES = {
       },
       NOT_FOUND: '이력서가 존재하지 않습니다.',
     },
+  },
+
+  ORDERS: {
     CREATE: {
-      SUCCEED: '이력서 생성에 성공했습니다.',
+      SUCCEED: '주문 생성에 성공했습니다.',
     },
-    READ_LIST: {
-      SUCCEED: '이력서 목록 조회에 성공했습니다.',
+    CANCEL: {
+      SUCCEED: '주문 취소에 성공했습니다.',
     },
     READ_DETAIL: {
-      SUCCEED: '이력서 상세 조회에 성공했습니다.',
+      SUCCEED: '주문 상세 조회에 성공했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '주문 목록 조회에 성공했습니다.',
     },
     UPDATE: {
-      SUCCEED: '이력서 수정에 성공했습니다.',
-      NO_BODY_DATA: '수정 할 정보를 입력해 주세요.',
+      SUCCEED: '주문 상태 변경에 성공했습니다.',
     },
-    DELETE: {
-      SUCCEED: '이력서 삭제에 성공했습니다.',
-    },
-  },
-  ORDER: {
-    COMMON: {
-      NOT_FOUND: '주문이 존재하지 않습니다.',
-    },
+    INSUFFICIENT_POINTS: '포인트가 부족합니다.',
+    INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
+    INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
   },
   REVIEW: {
     COMMON: {
@@ -114,5 +115,44 @@ export const MESSAGES = {
   },
   FILE: {
     INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
+  },
+  RESTAURANT: {
+    COMMON: {
+      NAME: {
+        REQUIRED: '업장 이름을 입력해 주세요.',
+      },
+      CATEGORY: {
+        REQUIRED: '업장 카테고리를 입력해 주세요.',
+      },
+      ADDRESS: {
+        REQUIRED: '업장 주소를 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '업장 설명을 입력해 주세요.',
+      },
+      NOT_FOUND: '존재하지 않는 업장입니다.',
+    },
+    CREATE: {
+      SUCCEED: '업장 생성에 성공했습니다.',
+      MULTI_NOT_ALLOW: '업장은 하나만 가질 수 있습니다.',
+    },
+    READ: {
+      SUCCEED: '업장 조회에 성공했습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '업장 상세 조회에 성공했습니다.',
+    },
+    READ_KEYWORD: {
+      SUCCEED: '키워드 기반 업장 조회에 성공했습니다.',
+    },
+    UPDATE: {
+      STATUS: {
+        NO_BODY_DATA: '수정할 정보을 입력해주세요.',
+      },
+      SUCCEED: '업장 수정에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '업장 삭제에 성공했습니다.',
+    },
   },
 };
