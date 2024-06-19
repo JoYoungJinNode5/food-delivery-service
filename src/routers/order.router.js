@@ -13,14 +13,14 @@ const orderService = new OrderService(orderRepository, userRepository);
 const orderController = new OrderController(orderService);
 
 // 메뉴 주문 api
-orderRouter.post('/orders', accessTokenMiddleware(userRepository), orderController.createOrder);
+orderRouter.post('/', accessTokenMiddleware(userRepository), orderController.createOrder);
 // 메뉴 주문 취소 api
-orderRouter.delete('/orders/:orderId', accessTokenMiddleware(userRepository), orderController.cancelOrder);
+orderRouter.delete('/:orderId', accessTokenMiddleware(userRepository), orderController.cancelOrder);
 // 메뉴 주문 상세 조회 api
-orderRouter.get('/orders/:orderId', accessTokenMiddleware(userRepository), orderController.getOrderById);
+orderRouter.get('/:orderId', accessTokenMiddleware(userRepository), orderController.getOrderById);
 // 주문 내역 목록 조회 api
-orderRouter.get('/orders', accessTokenMiddleware(userRepository), orderController.getAllOrders);
+orderRouter.get('/', accessTokenMiddleware(userRepository), orderController.getAllOrders);
 // 주문 내역 상태 변경 api
-orderRouter.patch('/orders/:orderId/status', accessTokenMiddleware(userRepository), orderController.updateOrderStatus);
+orderRouter.patch('/:orderId/status', accessTokenMiddleware(userRepository), orderController.updateOrderStatus);
 
 export { orderRouter };

@@ -49,13 +49,9 @@ export class OrderRepository {
     });
   }
 
-  async cancelOrder(orderId) {
-    return prisma.order.update({
+  async deleteOrder(orderId) {
+    return prisma.order.delete({
       where: { id: orderId },
-      data: {
-        orderStatus: 'CANCELLED',
-        updatedAt: new Date(),
-      },
     });
   }
 
@@ -64,6 +60,8 @@ export class OrderRepository {
       where: { id: orderId },
       include: {
         orderItems: true,
+        user: true,
+        restaurant: true,
       },
     });
   }

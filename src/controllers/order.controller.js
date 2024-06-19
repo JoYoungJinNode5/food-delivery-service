@@ -1,11 +1,10 @@
-import { OrderService } from '../services/order.service.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { HttpError } from '../errors/http.error.js';
 
 export class OrderController {
-  constructor() {
-    this.orderService = new OrderService();
+  constructor(orderService) {
+    this.orderService = orderService;
   }
 
   createOrder = async (req, res, next) => {
@@ -33,11 +32,10 @@ export class OrderController {
   cancelOrder = async (req, res, next) => {
     try {
       const { orderId } = req.params;
-      const data = await this.orderService.cancelOrder(orderId);
+      await this.orderService.cancelOrder(orderId);
       return res.status(HTTP_STATUS.OK).json({
         status: res.statusCode,
         message: MESSAGES.ORDERS.CANCEL.SUCCEED,
-        data,
       });
     } catch (error) {
       next(error);
@@ -60,7 +58,8 @@ export class OrderController {
 
   getAllOrders = async (req, res, next) => {
     try {
-      const data = await this.orderService.getAllOrders();
+      const userId = req.user.id; // 액세스 토큰에서 가져온 유저 ID
+      const data = await this.orderService.getAllOrders(userId);
       return res.status(HTTP_STATUS.OK).json({
         status: res.statusCode,
         message: MESSAGES.ORDERS.READ_LIST.SUCCEED,

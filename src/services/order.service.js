@@ -41,7 +41,7 @@ export class OrderService {
 
   async cancelOrder(orderId) {
     try {
-      return await this.orderRepository.cancelOrder(orderId);
+      return await this.orderRepository.deleteOrder(orderId);
     } catch (error) {
       throw new HttpError.InternalServerError(error.message);
     }
