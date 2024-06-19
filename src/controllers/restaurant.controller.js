@@ -4,17 +4,24 @@ import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { RestaurantService } from '../services/restaurant.service.js';
 
 export class RestaurantController {
-	restaurantService = new RestaurantService();
+	constructor(restaurantService) {
+		this.restaurantService = restaurantService;
+	}
+
+	// restaurantService = new RestaurantService();
 
 	// 업장 생성 컨트롤러
 	createRestaurant = async (req, res, next) => {
 		try {
 			// req.body 값에 name, category, address, content, openingTime 구조 분해 할당
 			const { name, category, address, content, image, openingTime } = req.body;
+			const user = req.user;
+			const userId = user.id;
 
-			// 
+
+
 			const createdRestaurant = await this.restaurantService.createRestaurant(
-				name, category, address, content, image, openingTime
+				name, category, address, content, image, openingTime, userId
 			);
 
 			return res.status(HTTP_STATUS.CREATED).json({
@@ -73,11 +80,28 @@ export class RestaurantController {
 	// 업장 목록 조회
 	getAllRestaurants = async (req, res, next) => {
 		try {
-			const restaurants = await this.restaurantService.findAllRestaurants();
+			// 쿼리 값 받아오기
+			const { keyword } = req.query;
+			const restaurants = await this.restaurantService.findRestaurants(keyword);
 
 			return res.status(HTTP_STATUS.OK).json({
 				status: HTTP_STATUS.OK,
 				message: MESSAGES.RESTAURANT.READ.SUCCEED,
+				data: restaurants
+			});
+		} catch (err) {
+			next(err);
+		}
+	}
+	// 키워드 기반 목록 조회
+	getRestaurantsByKeyword = async (req, res, next) => {
+		try {
+			const { keyword } = req.body;
+			const restaurants = await this.restaurantService.findRestaurantByKeyword(keyword);
+
+			return res.staus(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: MESSAGES.RESTAURANT.READ_KEYWORD.SUCCEED,
 				data: restaurants
 			});
 		} catch (err) {

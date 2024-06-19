@@ -102,24 +102,27 @@ export const MESSAGES = {
 		},
 		CREATE: {
 			SUCCEED: '업장 생성에 성공했습니다.',
+			MULTI_NOT_ALLOW: '업장은 하나만 가질 수 있습니다.',
 		},
 		READ: {
 			SUCCEED: '업장 조회에 성공했습니다.',
 		},
 		READ_DETAIL: {
 			SUCCEED: '업장 상세 조회에 성공했습니다.',
+		},
+		READ_KEYWORD: {
+			SUCCEED: '키워드 기반 업장 조회에 성공했습니다.',
+
 
 		},
 		UPDATE: {
 			STATUS: {
-
+				NO_BODY_DATA: '수정할 정보을 입력해주세요.',
 			},
 			SUCCEED: '업장 수정에 성공했습니다.',
-			NO_BODY_DATA: '수정할 정보를 입력해 주세요.',
 		},
 		DELETE: {
 			SUCCEED: '업장 삭제에 성공했습니다.',
 		},
-
-	},
+	}
 };
