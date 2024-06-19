@@ -111,4 +111,24 @@ export const MESSAGES = {
   FILE: {
     INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
   },
+  LIKES: {
+    COMMON: {
+      ACTION: {
+        INVALID_FORMAT: '유효하지 않은 형식입니다.',
+        REQUIRED: '좋아요/좋아요 취소 등 값을 입력해주세요.',
+      },
+    },
+    LIKE: {
+      SUCCEED: '좋아요에 등록에 성공했습니다.',
+      DUPLICATED: '이미 좋아요 등록이 되어있습니다.',
+    },
+    UNLIKE: {
+      SUCCEED: '좋아요 취소에 성공했습니다.',
+    },
+  },
+  RESTAURANT: {
+    COMMON: {
+      NOT_FOUND: '존재하지 않는 업장입니다.',
+    },
+  },
 };

@@ -15,7 +15,7 @@ const reviewRepository = new ReviewRepository(prisma);
 const reviewImageRepository = new ReviewImageRepository(prisma);
 const reviewService = new ReviewService(reviewRepository, reviewImageRepository, orderRepository);
 const reviewController = new ReviewController(reviewService);
-const reviewRouter = express.Router();
+const reviewRouter = express.Router({ mergeParams: true });
 
 reviewRouter.post(
   '/',
