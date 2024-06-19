@@ -7,7 +7,7 @@ import { MESSAGES } from '../constants/message.constant.js';
 export class OrderService {
   constructor() {
     this.orderRepository = new OrderRepository();
-    this.userRepository = new UserRepository(); // 유저 리포지토리 초기화
+    this.userRepository = new UserRepository();
     // this.menuRepository = new MenuRepository();
   }
 
