@@ -1,5 +1,6 @@
 import { OrderRepository } from '../repositories/order.repository.js';
 import { UserRepository } from '../repositories/user.repository.js'; // 유저 리포지토리 추가
+// import { MenuRepository } from '../repositories/menu.repository.js';//메뉴 리포지토리 생성되면 주석 해제
 import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
 
@@ -7,10 +8,24 @@ export class OrderService {
   constructor() {
     this.orderRepository = new OrderRepository();
     this.userRepository = new UserRepository(); // 유저 리포지토리 초기화
+    // this.menuRepository = new MenuRepository();
   }
 
   async createOrder(data) {
-    const { userId, restaurantId, orderStatus, deliverStatus, orderItems, address } = data;
+    const { userId, restaurantId, orderItems, address } = data;
+
+    const orderItemsData = [];
+    for (const item of orderItems) {
+      const menuItem = await this.menuRepository.getMenuById(item.menuId); //메뉴 리포지토리 생성되면 주석 해제
+      if (!menuItem || menuItem.restaurantId !== restaurantId) {
+        throw new HttpError.BadRequest(MESSAGES.ORDERS.INVALID_MENU_ITEM);
+      }
+      orderItemsData.push({
+        productId: item.menuId,
+        quantity: item.quantity,
+        price: menuItem.price,
+      });
+    }
 
     // 주문 총 가격 계산
     const totalPrice = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -26,9 +41,9 @@ export class OrderService {
       const order = await this.orderRepository.createOrderWithTransaction({
         userId,
         restaurantId,
-        orderStatus,
-        deliverStatus,
-        orderItems,
+        orderStatus: 'PENDING', // 기본값 설정
+        deliverStatus: 'PENDING', // 기본값 설정
+        orderItems: orderItemsData,
         totalPrice,
         address,
         userPoint: user.point - totalPrice,
@@ -71,3 +86,12 @@ export class OrderService {
     }
   }
 }
+
+//메뉴 리파지토리에서 메뉴 아이디 찾기
+// export class MenuRepository {
+//   async getMenuById(menuId) {
+//     return prisma.menu.findUnique({
+//       where: { id: menuId }
+//     });
+//   }
+// }

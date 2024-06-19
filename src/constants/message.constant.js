@@ -83,6 +83,8 @@ export const MESSAGES = {
       SUCCEED: '주문 상태 변경에 성공했습니다.',
     },
     INSUFFICIENT_POINTS: '포인트가 부족합니다.',
+    INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
+    INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
   },
   REVIEW: {
     COMMON: {

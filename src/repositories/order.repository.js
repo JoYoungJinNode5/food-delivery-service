@@ -85,3 +85,11 @@ export class OrderRepository {
     });
   }
 }
+
+export class MenuRepository {
+  async getMenuById(menuId) {
+    return prisma.menu.findUnique({
+      where: { id: menuId },
+    });
+  }
+}

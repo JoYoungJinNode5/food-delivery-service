@@ -9,15 +9,13 @@ export class OrderController {
 
   createOrder = async (req, res, next) => {
     try {
-      const { restaurantId, orderStatus, deliverStatus, orderItems, address } = req.body;
+      const { restaurantId, address, orderItems } = req.body;
       const userId = req.user.id; // 액세스 토큰에서 가져온 유저 ID
       const data = await this.orderService.createOrder({
         userId,
         restaurantId,
-        orderStatus,
-        deliverStatus,
-        orderItems,
         address,
+        orderItems,
       });
       return res.status(HTTP_STATUS.CREATED).json({
         status: res.statusCode,
