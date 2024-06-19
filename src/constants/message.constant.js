@@ -7,6 +7,10 @@ export const MESSAGES = {
         REQUIRED: '이메일을 입력해 주세요.',
         INVALID_FORMAT: '이메일 형식이 올바르지 않습니다.',
         DUPLICATED: '이미 가입 된 사용자입니다.',
+        TRANSFER_FAILED: '인증번호 전송에 실패했습니다.',
+        TRANSFER_SUCCEED: '인증번호 전송에 성공했습니다.',
+        NOT_MACHTED_TRANSFER: '인증번호가 일치하지 않습니다.',
+        SUCCEED: '이메일 인증에 성공했습니다.',
       },
       PASSWORD: {
         REQURIED: '비밀번호를 입력해 주세요.',
@@ -93,5 +97,59 @@ export const MESSAGES = {
   },
   FILE: {
     INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
+  },
+  RESTAURANT: {
+    COMMON: {
+      NAME: {
+        REQUIRED: '업장 이름을 입력해 주세요.',
+      },
+      CATEGORY: {
+        REQUIRED: '업장 카테고리를 입력해 주세요.',
+      },
+      ADDRESS: {
+        REQUIRED: '업장 주소를 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '업장 설명을 입력해 주세요.',
+      },
+      NOT_FOUND: '존재하지 않는 업장입니다.',
+    },
+    CREATE: {
+      SUCCEED: '업장 생성에 성공했습니다.',
+      MULTI_NOT_ALLOW: '업장은 하나만 가질 수 있습니다.',
+    },
+    READ: {
+      SUCCEED: '업장 조회에 성공했습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '업장 상세 조회에 성공했습니다.',
+    },
+    READ_KEYWORD: {
+      SUCCEED: '키워드 기반 업장 조회에 성공했습니다.',
+    },
+    UPDATE: {
+      STATUS: {
+        NO_BODY_DATA: '수정할 정보을 입력해주세요.',
+      },
+      SUCCEED: '업장 수정에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '업장 삭제에 성공했습니다.',
+    },
+  },
+  LIKES: {
+    COMMON: {
+      ACTION: {
+        INVALID_FORMAT: '유효하지 않은 형식입니다.',
+        REQUIRED: '좋아요/좋아요 취소 등 값을 입력해주세요.',
+      },
+    },
+    LIKE: {
+      SUCCEED: '좋아요에 등록에 성공했습니다.',
+      DUPLICATED: '이미 좋아요 등록이 되어있습니다.',
+    },
+    UNLIKE: {
+      SUCCEED: '좋아요 취소에 성공했습니다.',
+    },
   },
 };
