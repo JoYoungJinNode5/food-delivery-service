@@ -6,6 +6,7 @@ const schema = Joi.object({
 	category: Joi.string().optional(),
 	address: Joi.string().optional(),
 	content: Joi.string().optional(),
+	// name, category, address, content 중 최소한1개(min(1))는 있어야 함
 }).min(1).message({
 	'object.min': MESSAGES.RESTAURANT.UPDATE.NO_BODY_DATA,
 });

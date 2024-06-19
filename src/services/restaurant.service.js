@@ -6,9 +6,9 @@ export class RestaurantService {
 	restaurantRepository = new RestaurantRepository();
 
 	// 업장 생성 서비스
-	createRestaurant = async (name, category, address, content, image) => {
+	createRestaurant = async (name, category, address, content, image, openingTime) => {
 		const createdRestaurant = await this.restaurantRepository.createdRestaurant(
-			name, category, address, content, image
+			name, category, address, content, image, openingTime
 		);
 
 		return {
@@ -18,16 +18,17 @@ export class RestaurantService {
 			address: createdRestaurant.address,
 			content: createdRestaurant.content,
 			image: createdRestaurant.image,
+			openingTime: createdRestaurant.openingTime,
 			createdAt: createdRestaurant.createdAt,
 			updateAt: createdRestaurant.updatedAt,
 		};
 	};
 
 	// 업장 정보 수정 서비스
-	updateRestaurant = async (name, category, address, content, restaurantId) => {
+	updateRestaurant = async (name, category, address, content, restaurantId, image, openingTime) => {
 
 		const updatedRestaurant = await this.restaurantRepository.updatedRestaurant(
-			name, category, address, content, restaurantId
+			name, category, address, content, restaurantId, image, openingTime
 		);
 
 		if (!updatedRestaurant) {
@@ -40,6 +41,8 @@ export class RestaurantService {
 			category: updatedRestaurant.category,
 			address: updatedRestaurant.address,
 			content: updatedRestaurant.content,
+			image: updatedRestaurant.image,
+			openingTime: updatedRestaurant.openingTime,
 			createdAt: updatedRestaurant.createdAt,
 			updatedAt: updatedRestaurant.updatedAt,
 
@@ -59,6 +62,7 @@ export class RestaurantService {
 			category: restaurant.category,
 			address: restaurant.address,
 			content: restaurant.content,
+			openingTime: restaurant.openingTime,
 			createdAt: restaurant.createdAt,
 			updateAt: restaurant.updatedAt,
 		};

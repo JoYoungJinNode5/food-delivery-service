@@ -9,10 +9,12 @@ export class RestaurantController {
 	// 업장 생성 컨트롤러
 	createRestaurant = async (req, res, next) => {
 		try {
-			const { name, category, address, content, image } = req.body;
+			// req.body 값에 name, category, address, content, openingTime 구조 분해 할당
+			const { name, category, address, content, image, openingTime } = req.body;
 
+			// 
 			const createdRestaurant = await this.restaurantService.createRestaurant(
-				name, category, address, content, image
+				name, category, address, content, image, openingTime
 			);
 
 			return res.status(HTTP_STATUS.CREATED).json({
@@ -29,12 +31,14 @@ export class RestaurantController {
 	// 업장 정보 수정 컨트롤러
 	updateRestaurant = async (req, res, next) => {
 		try {
-			const { name, category, address, content } = req.body;
+			// req.body 값에 name, category, address, content 구조 분해 할당
+			const { name, category, address, content, image, openingTime } = req.body;
+			// 파라미터 값 가져오기
 			const { restaurantId } = req.params;
 
 
 			const updatedRestaurant = await this.restaurantService.updateRestaurant(
-				name, category, address, content, restaurantId
+				name, category, address, content, restaurantId, image, openingTime
 			);
 
 			return res.status(HTTP_STATUS.OK).json({
@@ -51,6 +55,7 @@ export class RestaurantController {
 	// 업장 상세 조회 컨트롤러
 	getRestaurant = async (req, res, next) => {
 		try {
+			// 파라미터 값 가져오기
 			const { restaurantId } = req.params;
 
 			const restaurant = await this.restaurantService.findRestaurantById(restaurantId);
@@ -83,7 +88,9 @@ export class RestaurantController {
 	// 업장 삭제
 	deleteRestaurant = async (req, res, next) => {
 		try {
+			// 파라미터 값 가져오기
 			const { restaurantId } = req.params;
+
 			const deletedRestaurant = await this.restaurantService.deleteRestaurantById(restaurantId);
 
 			return res.status(HTTP_STATUS.OK).json({
