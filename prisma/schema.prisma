@@ -113,7 +113,6 @@ model Like {
 model Review {
   id           Int      @id @default(autoincrement())
   orderId      Int      @unique @map("order_id")
-  restaurantId Int      @map("restaurant_id")
   content      String?  @db.Text
   rating       Int
   createdAt    DateTime @default(now()) @map("created_at")

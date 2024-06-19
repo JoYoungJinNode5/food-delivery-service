@@ -47,6 +47,25 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
+
+  USERS: {
+    READ_ME: {
+      SUCCEED: '내 정보 조회에 성공했습니다.',
+    },
+  },
+  RESUMES: {
+    COMMON: {
+      TITLE: {
+        REQUIRED: '제목을 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '자기소개를 입력해 주세요.',
+        // MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
+      },
+      NOT_FOUND: '이력서가 존재하지 않습니다.',
+    },
+  },
+
   ORDERS: {
     CREATE: {
       SUCCEED: '주문 생성에 성공했습니다.',
@@ -64,5 +83,31 @@ export const MESSAGES = {
       SUCCEED: '주문 상태 변경에 성공했습니다.',
     },
     INSUFFICIENT_POINTS: '포인트가 부족합니다.',
+  },
+  REVIEW: {
+    COMMON: {
+      RATING: {
+        REQUIRED: '별점을 입력해 주세요.',
+      },
+      ORDER: {
+        REQUIRED: '주문 기록이 존재하지 않습니다.',
+      },
+      NOT_FOUND: '리뷰가 존재하지 않습니다.',
+    },
+    CREATE: {
+      SUCCEED: '리뷰 작성에 성공했습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '리뷰 수정에 성공했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '리뷰 목록 조회에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '리뷰 삭제에 성공했습니다.',
+    },
+  },
+  FILE: {
+    INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
   },
 };
