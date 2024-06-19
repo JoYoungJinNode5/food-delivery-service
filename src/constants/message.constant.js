@@ -53,6 +53,37 @@ export const MESSAGES = {
 			SUCCEED: '내 정보 조회에 성공했습니다.',
 		},
 	},
+	ORDER: {
+		COMMON: {
+			NOT_FOUND: '주문이 존재하지 않습니다.',
+		},
+	},
+	REVIEW: {
+		COMMON: {
+			RATING: {
+				REQUIRED: '별점을 입력해 주세요.',
+			},
+			ORDER: {
+				REQUIRED: '주문 기록이 존재하지 않습니다.',
+			},
+			NOT_FOUND: '리뷰가 존재하지 않습니다.',
+		},
+		CREATE: {
+			SUCCEED: '리뷰 작성에 성공했습니다.',
+		},
+		UPDATE: {
+			SUCCEED: '리뷰 수정에 성공했습니다.',
+		},
+		READ_LIST: {
+			SUCCEED: '리뷰 목록 조회에 성공했습니다.',
+		},
+		DELETE: {
+			SUCCEED: '리뷰 삭제에 성공했습니다.',
+		},
+	},
+	FILE: {
+		INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
+	},
 	RESTAURANT: {
 		COMMON: {
 			NAME: {
