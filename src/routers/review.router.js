@@ -6,17 +6,26 @@ import { ReviewService } from '../services/review.service.js';
 import { ReviewController } from '../controllers/review.controller.js';
 import { createReviewValidator } from '../middlewares/validators/create-review-validator.middleware.js';
 import { updateReviewValidator } from '../middlewares/validators/update-review-validator.middleware.js';
+import { accessTokenMiddleware } from '../middlewares/require-access-token.middleware.js';
+import { fileUploadMiddleware } from '../middlewares/file-upload.middleware.js';
+import { ReviewImageRepository } from '../repositories/review-image.repository.js';
 
 const orderRepository = new OrderRepository(prisma);
 const reviewRepository = new ReviewRepository(prisma);
-const reviewService = new ReviewService(reviewRepository, orderRepository);
+const reviewImageRepository = new ReviewImageRepository(prisma);
+const reviewService = new ReviewService(reviewRepository, reviewImageRepository, orderRepository);
 const reviewController = new ReviewController(reviewService);
+const reviewRouter = express.Router();
 
-const router = express.Router();
+reviewRouter.post(
+  '/',
+  accessTokenMiddleware,
+  fileUploadMiddleware('review'),
+  createReviewValidator,
+  reviewController.createReview,
+);
+reviewRouter.patch('/:reviewId', accessTokenMiddleware, updateReviewValidator, reviewController.updateReview);
+reviewRouter.get('/', reviewController.findReviews);
+reviewRouter.delete('/:reviewId', accessTokenMiddleware, reviewController.deleteReview);
 
-router.post('/', createReviewValidator, reviewController.createReview);
-router.patch('/:reviewId', updateReviewValidator, reviewController.updateReview);
-router.get('/', reviewController.findReviews);
-router.delete('/:reviewId', reviewController.deleteReview);
-
-export default router;
+export { reviewRouter };

@@ -1,9 +1,10 @@
 import Joi from 'joi';
 import { MESSAGES } from '../../constants/message.constant.js';
 import { MIN_REVIEW_RATING } from '../../constants/review.constant.js';
+// import { jsonParser } from '../../utils/file-upload.util.js';
 
 const schema = Joi.object({
-  orderId: Joi.string().required().messages({
+  orderId: Joi.number().integer().required().messages({
     'any.required': MESSAGES.REVIEW.COMMON.ORDER.REQUIRED,
   }),
   content: Joi.string().messages(),
@@ -16,6 +17,7 @@ const schema = Joi.object({
 export const createReviewValidator = async (req, res, next) => {
   try {
     await schema.validateAsync(req.body);
+    next();
   } catch (err) {
     next(err);
   }

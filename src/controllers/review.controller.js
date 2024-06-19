@@ -9,11 +9,9 @@ export class ReviewController {
 
   createReview = async (req, res, next) => {
     try {
-      // const { id } = req.user;
-      // const { restaurantId } = req.param;
-      // const { orderId, content, image, rating } = req.body;
-
-      // const review = await this.reviewService.createReview(id, orderId, restaurantId, content, image, rating);
+      const images = req.files;
+      const { orderId, content, rating } = req.body;
+      const review = await this.reviewService.createReview(orderId, content, images, rating);
 
       return res
         .status(HTTP_STATUS.CREATED)
@@ -24,7 +22,7 @@ export class ReviewController {
   };
   updateReview = async (req, res, next) => {
     try {
-      const { reviewId } = req.param;
+      const { reviewId } = req.params;
       const { content, image, rating } = req.body;
 
       const review = await this.reviewService.updateReview(reviewId, content, image, rating);
@@ -36,7 +34,7 @@ export class ReviewController {
   };
   deleteReview = async (req, res, next) => {
     try {
-      const { reviewId } = req.param;
+      const { reviewId } = req.params;
 
       const review = await this.reviewService.deleteReview(reviewId);
 
@@ -47,7 +45,7 @@ export class ReviewController {
   };
   findReviews = async (req, res, next) => {
     try {
-      const { restaurantId } = req.param;
+      const { restaurantId } = req.params;
       const reviews = await this.reviewService.findReviews(restaurantId);
 
       return res

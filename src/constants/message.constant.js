@@ -108,4 +108,7 @@ export const MESSAGES = {
       SUCCEED: '리뷰 삭제에 성공했습니다.',
     },
   },
+  FILE: {
+    INVALID_FORMAT: '사진 파일은 .jpg, .jpeg, .png, .gif 만 가능합니다.',
+  },
 };

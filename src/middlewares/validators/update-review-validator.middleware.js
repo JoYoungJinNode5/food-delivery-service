@@ -13,6 +13,7 @@ const schema = Joi.object({
 export const updateReviewValidator = async (req, res, next) => {
   try {
     await schema.validateAsync(req.body);
+    next();
   } catch (err) {
     next(err);
   }
