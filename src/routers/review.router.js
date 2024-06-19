@@ -24,7 +24,13 @@ reviewRouter.post(
 	createReviewValidator,
 	reviewController.createReview,
 );
-reviewRouter.patch('/:reviewId', accessTokenMiddleware, updateReviewValidator, reviewController.updateReview);
+reviewRouter.patch(
+  '/:reviewId',
+  accessTokenMiddleware,
+  fileUploadMiddleware('review'),
+  updateReviewValidator,
+  reviewController.updateReview,
+);
 reviewRouter.get('/', reviewController.findReviews);
 reviewRouter.delete('/:reviewId', accessTokenMiddleware, reviewController.deleteReview);
 

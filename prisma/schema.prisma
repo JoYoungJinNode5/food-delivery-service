@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["omitApi"]
 }
 
 datasource db {
@@ -20,7 +21,7 @@ model User {
   nickname   String   @unique
   name       String
   address    String
-  point      Int      @default(1000000)
+  point      Float    @default(1000000)
   role       Role     @default(USER)
   profileImg String?  @map("profile_img")
   createdAt  DateTime @default(now()) @map("created_at")
@@ -52,6 +53,10 @@ model Order {
   restaurantId  Int           @map("restaurant_id")
   orderStatus   OrderStatus   @default(REQUEST) @map("order_status")
   deliverStatus DeliverStatus @default(PREPARING) @map("deliver_status")
+  address       String
+  totalPrice    Float         @map("total_price")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
 
   review        Review?
   orderItem     OrderItem[]
@@ -63,12 +68,11 @@ model Order {
 }
 
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  orderId   Int      @map("order_id")
-  menuId    Int      @map("menu_id")
-  quantity  Int      @default(1)
-  price     Int
-  createdAt DateTime @default(now()) @map("created_at")
+  id       Int   @id @default(autoincrement())
+  orderId  Int   @map("order_id")
+  menuId   Int   @map("menu_id")
+  quantity Int   @default(1)
+  price    Float
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
   menu  Menu  @relation(fields: [menuId], references: [id], onDelete: Cascade)
@@ -135,7 +139,7 @@ model Menu {
   id           Int      @id @default(autoincrement())
   restaurantId Int      @map("restaurant_id")
   name         String   @map("name")
-  price        Int
+  price        Float
   image        String
   content      String   @db.Text
   createdAt    DateTime @default(now()) @map("created_at")
@@ -151,8 +155,8 @@ model RestaurantLog {
   id           Int      @id @default(autoincrement())
   orderId      Int      @map("order_id")
   restaurantId Int      @map("restaurant_id")
-  price        Int
-  totalPrice   Int      @map("total_price")
+  price        Float
+  totalPrice   Float    @map("total_price")
   createdAt    DateTime @default(now()) @map("created_at")
 
   order      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)

@@ -9,6 +9,7 @@ import { accessTokenMiddleware } from '../middlewares/require-access-token.middl
 import { requireRoles } from '../middlewares/require.roles.middleware.js';
 import { USER_ROLE } from '../constants/role.constants.js';
 import { requireKeywords } from '../middlewares/keywords.middleware.js';
+import { fileUploadMiddleware } from '../middlewares/file-upload.middleware.js';
 
 const restaurantRouter = express.Router();
 
@@ -18,7 +19,7 @@ const restaurantService = new RestaurantService(restaurantRepository);
 const restaurantController = new RestaurantController(restaurantService);
 
 // 업장 생성
-restaurantRouter.post('/', accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), createRestaurantValidator, restaurantController.createRestaurant);
+restaurantRouter.post('/', fileUploadMiddleware('restaurant'), accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), createRestaurantValidator, restaurantController.createRestaurant);
 
 // 업장 정보 수정
 restaurantRouter.put('/:restaurantId', accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), updateRestaurantValidator, restaurantController.updateRestaurant);

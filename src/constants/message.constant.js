@@ -48,15 +48,44 @@ export const MESSAGES = {
 			SUCCEED: '토큰 재발급에 성공했습니다.',
 		},
 	},
+
 	USERS: {
 		READ_ME: {
 			SUCCEED: '내 정보 조회에 성공했습니다.',
 		},
 	},
-	ORDER: {
+	RESUMES: {
 		COMMON: {
-			NOT_FOUND: '주문이 존재하지 않습니다.',
+			TITLE: {
+				REQUIRED: '제목을 입력해 주세요.',
+			},
+			CONTENT: {
+				REQUIRED: '자기소개를 입력해 주세요.',
+				// MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
+			},
+			NOT_FOUND: '이력서가 존재하지 않습니다.',
 		},
+	},
+
+	ORDERS: {
+		CREATE: {
+			SUCCEED: '주문 생성에 성공했습니다.',
+		},
+		CANCEL: {
+			SUCCEED: '주문 취소에 성공했습니다.',
+		},
+		READ_DETAIL: {
+			SUCCEED: '주문 상세 조회에 성공했습니다.',
+		},
+		READ_LIST: {
+			SUCCEED: '주문 목록 조회에 성공했습니다.',
+		},
+		UPDATE: {
+			SUCCEED: '주문 상태 변경에 성공했습니다.',
+		},
+		INSUFFICIENT_POINTS: '포인트가 부족합니다.',
+		INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
+		INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
 	},
 	REVIEW: {
 		COMMON: {

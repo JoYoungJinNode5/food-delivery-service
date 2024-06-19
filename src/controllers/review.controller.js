@@ -23,9 +23,10 @@ export class ReviewController {
 	updateReview = async (req, res, next) => {
 		try {
 			const { reviewId } = req.params;
-			const { content, image, rating } = req.body;
+			const images = req.files;
+			const { content, rating } = req.body;
 
-			const review = await this.reviewService.updateReview(reviewId, content, image, rating);
+			const review = await this.reviewService.updateReview(reviewId, content, images, rating);
 
 			return res.status(HTTP_STATUS.OK).json(createResponse(HTTP_STATUS.OK, MESSAGES.REVIEW.UPDATE.SUCCEED, review));
 		} catch (error) {

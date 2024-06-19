@@ -14,7 +14,9 @@ export class RestaurantController {
 	createRestaurant = async (req, res, next) => {
 		try {
 			// req.body 값에 name, category, address, content, openingTime 구조 분해 할당
-			const { name, category, address, content, image, openingTime } = req.body;
+			const { name, category, address, content, openingTime } = req.body;
+			const imageData = req.files;
+			const image = imageData[0].location;
 			const user = req.user;
 			const userId = user.id;
 
