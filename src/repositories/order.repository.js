@@ -18,7 +18,6 @@ export class OrderRepository {
           restaurantId,
           orderStatus,
           deliverStatus,
-          createdAt: new Date(),
           totalPrice,
           address,
           orderItems: {
@@ -41,7 +40,6 @@ export class OrderRepository {
           restaurantId,
           price: totalPrice,
           totalPrice: totalPrice,
-          createdAt: new Date(),
         },
       });
 
@@ -80,7 +78,6 @@ export class OrderRepository {
       data: {
         orderStatus,
         deliverStatus,
-        updatedAt: new Date(),
       },
     });
   }
