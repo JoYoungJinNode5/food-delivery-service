@@ -8,6 +8,13 @@ export class ReviewRepository {
       where: {
         id,
       },
+      include: {
+        order: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
   };
 
@@ -28,24 +35,38 @@ export class ReviewRepository {
     });
   };
 
-  createReview = async (orderId, content, rating) => {
-    return await this.prisma.review.create({
+  createReview = async (tx, orderId, content, rating) => {
+    return await tx.review.create({
       data: {
         orderId,
         content,
         rating,
       },
+      include: {
+        order: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
   };
 
-  updateReview = async (id, content, rating) => {
-    return await this.prisma.review.update({
+  updateReview = async (tx, id, content, rating) => {
+    return await tx.review.update({
       where: {
         id,
       },
       data: {
         ...(content && { content }),
         ...(rating && { rating }),
+      },
+      include: {
+        order: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   };
