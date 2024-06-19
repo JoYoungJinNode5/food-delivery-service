@@ -18,11 +18,11 @@ const reviewController = new ReviewController(reviewService);
 const reviewRouter = express.Router();
 
 reviewRouter.post(
-  '/',
-  accessTokenMiddleware,
-  fileUploadMiddleware('review'),
-  createReviewValidator,
-  reviewController.createReview,
+	'/',
+	accessTokenMiddleware,
+	fileUploadMiddleware('review'),
+	createReviewValidator,
+	reviewController.createReview,
 );
 reviewRouter.patch(
   '/:reviewId',

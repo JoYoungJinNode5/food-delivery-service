@@ -9,56 +9,56 @@ import { createResponse } from '../utils/response.util.js';
 const userRepository = new UserRepository(prisma);
 
 export const accessTokenMiddleware = async (req, res, next) => {
-  try {
-    const { authorization } = req.headers;
-    if (!authorization) {
-      return res
-        .status(HTTP_STATUS.UNAUTHORIZED)
-        .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_TOKEN));
-    }
+	try {
+		const { authorization } = req.headers;
+		if (!authorization) {
+			return res
+				.status(HTTP_STATUS.UNAUTHORIZED)
+				.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_TOKEN));
+		}
 
-    const [tokenType, token] = authorization.split(' ');
-    if (tokenType !== 'Bearer') {
-      return res
-        .status(HTTP_STATUS.UNAUTHORIZED)
-        .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NOT_SUPPORTED_TYPE));
-    }
+		const [tokenType, token] = authorization.split(' ');
+		if (tokenType !== 'Bearer') {
+			return res
+				.status(HTTP_STATUS.UNAUTHORIZED)
+				.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NOT_SUPPORTED_TYPE));
+		}
 
-    if (!token) {
-      return res
-        .status(HTTP_STATUS.UNAUTHORIZED)
-        .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_TOKEN));
-    }
+		if (!token) {
+			return res
+				.status(HTTP_STATUS.UNAUTHORIZED)
+				.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_TOKEN));
+		}
 
-    let payload;
-    try {
-      payload = jwt.verify(token, ACCESS_TOKEN_SECRET_KEY);
-    } catch (error) {
-      switch (error.name) {
-        case 'TokenExpiredError':
-          return res
-            .status(HTTP_STATUS.UNAUTHORIZED)
-            .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.EXPIRED));
-        default:
-          return res
-            .status(HTTP_STATUS.UNAUTHORIZED)
-            .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.INVALID));
-      }
-    }
+		let payload;
+		try {
+			payload = jwt.verify(token, ACCESS_TOKEN_SECRET_KEY);
+		} catch (error) {
+			switch (error.name) {
+				case 'TokenExpiredError':
+					return res
+						.status(HTTP_STATUS.UNAUTHORIZED)
+						.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.EXPIRED));
+				default:
+					return res
+						.status(HTTP_STATUS.UNAUTHORIZED)
+						.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.INVALID));
+			}
+		}
 
-    const { id } = payload;
-    const whereCondition = { id: +id };
-    const user = await userRepository.findByUser(whereCondition);
+		const { id } = payload;
+		const whereCondition = { id: +id };
+		const user = await userRepository.findByUser(whereCondition);
 
-    if (!user) {
-      return res
-        .status(HTTP_STATUS.UNAUTHORIZED)
-        .json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_USER));
-    }
+		if (!user) {
+			return res
+				.status(HTTP_STATUS.UNAUTHORIZED)
+				.json(createResponse(HTTP_STATUS.UNAUTHORIZED, MESSAGES.AUTH.COMMON.JWT.NO_USER));
+		}
 
-    req.user = user;
-    next();
-  } catch (error) {
-    next(error);
-  }
+		req.user = user;
+		next();
+	} catch (error) {
+		next(error);
+	}
 };
