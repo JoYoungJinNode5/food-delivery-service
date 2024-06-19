@@ -1,7 +1,11 @@
 import express from 'express';
-import { prisma } from '../utils/prisma.util.js';
-// import { MenuRepository } from '../repositories/menu.repository.js';
-// import { MenuService } from '../services/menu.service.js';
-// import { MenuController } from '../controllers/menu.controller.js';
+import MenuController from '../controllers/menu.controller.js';
 
-// export { menuRouter };
+const router = express.Router();
+
+router.post('/', (req, res) => MenuController.createMenu(req, res));
+router.put('/:id', (req, res) => MenuController.updateMenu(req, res));
+router.delete('/:id', (req, res) => MenuController.deleteMenu(req, res));
+router.get('/', (req, res) => MenuController.getMenus(req, res));
+
+export default router;
