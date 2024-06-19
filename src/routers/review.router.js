@@ -18,13 +18,19 @@ const reviewController = new ReviewController(reviewService);
 const reviewRouter = express.Router({ mergeParams: true });
 
 reviewRouter.post(
-  '/',
+	'/',
+	accessTokenMiddleware,
+	fileUploadMiddleware('review'),
+	createReviewValidator,
+	reviewController.createReview,
+);
+reviewRouter.patch(
+  '/:reviewId',
   accessTokenMiddleware,
   fileUploadMiddleware('review'),
-  createReviewValidator,
-  reviewController.createReview,
+  updateReviewValidator,
+  reviewController.updateReview,
 );
-reviewRouter.patch('/:reviewId', accessTokenMiddleware, updateReviewValidator, reviewController.updateReview);
 reviewRouter.get('/', reviewController.findReviews);
 reviewRouter.delete('/:reviewId', accessTokenMiddleware, reviewController.deleteReview);
 

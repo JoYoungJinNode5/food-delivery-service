@@ -1,3 +1,5 @@
+import { prisma } from '../utils/prisma.util.js';
+
 export class UserRepository {
   constructor(prisma) {
     this.prisma = prisma;
@@ -52,5 +54,15 @@ export class UserRepository {
       where: { userId },
     });
     return data;
+  };
+
+  //유저 포인트 차감
+  updateUserPoints = async (userId, points) => {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        point: points,
+      },
+    });
   };
 }
