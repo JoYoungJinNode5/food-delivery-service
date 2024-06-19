@@ -3,41 +3,32 @@ import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { HttpError } from '../errors/http.error.js';
 
-export class OrderService {
+export class OrderController {
   constructor() {
-    this.orderRepository = new OrderRepository();
-    this.userRepository = new UserRepository();
+    this.orderService = new OrderService();
   }
 
-  //주문 생성 api
-  async createOrder(data) {
-    const { userId, restaurantId, orderStatus, deliverStatus, orderItems } = data;
-
-    // 주문 총 가격 계산
-    const totalPrice = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    // 유저 정보 가져오기
-    const user = await this.userRepository.getUserById(userId);
-    if (user.point < totalPrice) {
-      throw new HttpError.BadRequest(MESSAGES.ORDERS.INSUFFICIENT_POINTS);
-    }
-
-    // 트랜잭션으로 포인트 차감 및 주문 생성 처리
+  createOrder = async (req, res, next) => {
     try {
-      const order = await this.orderRepository.createOrderWithTransaction({
+      const { restaurantId, orderStatus, deliverStatus, orderItems, address } = req.body;
+      const userId = req.user.id; // 액세스 토큰에서 가져온 유저 ID
+      const data = await this.orderService.createOrder({
         userId,
         restaurantId,
         orderStatus,
         deliverStatus,
         orderItems,
-        totalPrice,
-        userPoint: user.point - totalPrice,
+        address,
       });
-      return order;
+      return res.status(HTTP_STATUS.CREATED).json({
+        status: res.statusCode,
+        message: MESSAGES.ORDERS.CREATE.SUCCEED,
+        data,
+      });
     } catch (error) {
-      throw new HttpError.InternalServerError(error.message);
+      next(error);
     }
-  }
+  };
 
   cancelOrder = async (req, res, next) => {
     try {
@@ -83,8 +74,8 @@ export class OrderService {
   updateOrderStatus = async (req, res, next) => {
     try {
       const { orderId } = req.params;
-      const { status } = req.body;
-      const data = await this.orderService.updateOrderStatus(orderId, status);
+      const { orderStatus, deliverStatus } = req.body;
+      const data = await this.orderService.updateOrderStatus(orderId, orderStatus, deliverStatus);
       return res.status(HTTP_STATUS.OK).json({
         status: res.statusCode,
         message: MESSAGES.ORDERS.UPDATE.SUCCEED,

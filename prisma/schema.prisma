@@ -52,6 +52,7 @@ model Order {
   restaurantId  Int           @map("restaurant_id")
   orderStatus   OrderStatus   @default(REQUEST) @map("order_status")
   deliverStatus DeliverStatus @default(PREPARING) @map("deliver_status")
+  address       String
   totalPrice    Float         @map("total_price")
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
