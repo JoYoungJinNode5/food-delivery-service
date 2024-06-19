@@ -8,6 +8,7 @@ export class AuthRepository {
   };
   getEmailKey = async (email) => {
     const data = await this.redis.get(`auth:${email}`);
+    await this.redis.del(`auth:${email}`);
     return data;
   };
 

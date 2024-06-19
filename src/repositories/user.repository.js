@@ -9,7 +9,7 @@ export class UserRepository {
     return isExistUser;
   };
 
-  createUser = async (email, password, nickname, name, address, profile_img) => {
+  createUser = async (email, password, nickname, name, address, profileImg) => {
     const userData = await this.prisma.user.create({
       data: {
         email,
@@ -17,7 +17,7 @@ export class UserRepository {
         nickname,
         name,
         address,
-        profile_img,
+        profileImg,
       },
     });
     return userData;

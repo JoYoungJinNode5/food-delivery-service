@@ -12,7 +12,7 @@ export class AuthService {
     this.userRepository = userRepository;
     this.authRepository = authRepository;
   }
-  signUp = async (email, password, passwordConfirm, nickname, name, address, profile_img) => {
+  signUp = async (email, password, passwordConfirm, nickname, name, address, profileImg) => {
     const whereCondition = { email };
     const isExistUser = await this.userRepository.findByUser(whereCondition);
 
@@ -27,7 +27,7 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT);
-    const userData = await this.userRepository.createUser(email, hashedPassword, nickname, name, address, profile_img);
+    const userData = await this.userRepository.createUser(email, hashedPassword, nickname, name, address, profileImg);
 
     userData.password = undefined;
     return userData;

@@ -6,6 +6,9 @@ import { AuthRepository } from '../repositories/auth.repository.js';
 import { AuthService } from '../services/auth.service.js';
 import { AuthController } from '../controllers/auth.controller.js';
 import { refreshTokenMiddleware } from '../middlewares/require-refresh-token.middleware.js';
+import { fileUploadMiddleware } from '../middlewares/file-upload.middleware.js';
+import { signUpValidator } from '../middlewares/validators/create-user-validator.middleware.js';
+import { signInValidator } from '../middlewares/validators/sign-in-validator.middleware.js';
 
 const authRouter = express.Router();
 
@@ -16,11 +19,11 @@ const authController = new AuthController(authService);
 const refreshTokenMiddlewareDi = refreshTokenMiddleware(userRepository, authRepository);
 
 // 회원가입
-authRouter.post('/sign-up', authController.signUp);
+authRouter.post('/sign-up', fileUploadMiddleware('profile'), signUpValidator, authController.signUp);
 // 중복 닉네임 체크
 authRouter.post('/check-nickname', authController.checkNickname);
 // 로그인
-authRouter.post('/sign-in', authController.signIn);
+authRouter.post('/sign-in', signInValidator, authController.signIn);
 // 토큰 재발급
 authRouter.post('/reload-tokens', refreshTokenMiddlewareDi, authController.reloadToken);
 // 로그아웃

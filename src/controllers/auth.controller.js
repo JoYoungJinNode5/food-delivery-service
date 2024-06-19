@@ -10,16 +10,11 @@ export class AuthController {
 
   signUp = async (req, res, next) => {
     try {
-      const { email, password, passwordConfirm, nickname, name, address, profile_img } = req.body;
-      const data = await this.authService.signUp(
-        email,
-        password,
-        passwordConfirm,
-        nickname,
-        name,
-        address,
-        profile_img,
-      );
+      const { email, password, passwordConfirm, nickname, name, address } = req.body;
+      const imgData = req.files;
+      const profileImg = imgData[0].location;
+
+      const data = await this.authService.signUp(email, password, passwordConfirm, nickname, name, address, profileImg);
 
       return res.status(HTTP_STATUS.CREATED).json({
         status: res.statusCode,
