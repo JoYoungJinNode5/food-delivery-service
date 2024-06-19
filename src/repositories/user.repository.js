@@ -32,25 +32,25 @@ export class UserRepository {
     });
   };
 
-  tokenUpload = async (userId, refreshToken) => {
-    const data = await this.prisma.RefreshToken.upsert({
-      where: {
-        userId,
-      },
-      update: {
-        refreshToken,
-      },
-      create: {
-        userId,
-        refreshToken,
-      },
-    });
-    return data;
-  };
-  refreshToken = async (userId) => {
-    const data = await this.prisma.RefreshToken.findUnique({
-      where: { userId },
-    });
-    return data;
-  };
+  //   tokenUpload = async (userId, refreshToken) => {
+  //     const data = await this.prisma.RefreshToken.upsert({
+  //       where: {
+  //         userId,
+  //       },
+  //       update: {
+  //         refreshToken,
+  //       },
+  //       create: {
+  //         userId,
+  //         refreshToken,
+  //       },
+  //     });
+  //     return data;
+  //   };
+  //   refreshToken = async (userId) => {
+  //     const data = await this.prisma.RefreshToken.findUnique({
+  //       where: { userId },
+  //     });
+  //     return data;
+  //   };
 }

@@ -4,7 +4,7 @@ import { MESSAGES } from '../constants/message.constant.js';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { REFRESH_TOKEN_SECRET_KEY } from '../constants/env.constant.js';
 
-export const refreshTokenMiddleware = (userRepository) => {
+export const refreshTokenMiddleware = (userRepository, authRepository) => {
   return async (req, res, next) => {
     try {
       const authorization = req.headers.authorization;
@@ -44,16 +44,16 @@ export const refreshTokenMiddleware = (userRepository) => {
         });
       }
 
-      const safetoken = await userRepository.refreshToken(userId);
-
-      if (!safetoken.refreshToken) {
+      const safetoken = await authRepository.refreshToken(userId);
+      console.log(safetoken);
+      if (!safetoken) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           status: res.statusCode,
           message: '삭제된 토큰입니다.',
         });
       }
 
-      if (!(await bcrypt.compare(token, safetoken.refreshToken))) {
+      if (!(await bcrypt.compare(token, safetoken))) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           status: res.statusCode,
           message: MESSAGES.AUTH.COMMON.JWT.DISCARDED_TOKEN,

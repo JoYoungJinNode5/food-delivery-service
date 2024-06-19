@@ -13,7 +13,7 @@ const authRepository = new AuthRepository(redis);
 const userRepository = new UserRepository(prisma);
 const authService = new AuthService(userRepository, authRepository);
 const authController = new AuthController(authService);
-const refreshTokenMiddlewareDi = refreshTokenMiddleware(userRepository);
+const refreshTokenMiddlewareDi = refreshTokenMiddleware(userRepository, authRepository);
 
 // 회원가입
 authRouter.post('/sign-up', authController.signUp);
@@ -22,7 +22,7 @@ authRouter.post('/check-nickname', authController.checkNickname);
 // 로그인
 authRouter.post('/sign-in', authController.signIn);
 // 토큰 재발급
-authRouter.post('/tokens', refreshTokenMiddlewareDi, authController.reloadToken);
+authRouter.post('/reload-tokens', refreshTokenMiddlewareDi, authController.reloadToken);
 // 로그아웃
 authRouter.post('/sign-out', refreshTokenMiddlewareDi, authController.signOut);
 // 이메일 검증번호 전송

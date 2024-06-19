@@ -54,7 +54,7 @@ export class AuthService {
   };
 
   signOut = async (userId) => {
-    await this.userRepository.signOutUser(userId);
+    await this.authRepository.signOutUser(userId);
   };
 
   generateAuthTokens = async (payload) => {
@@ -70,7 +70,7 @@ export class AuthService {
 
     const hashedRefreshToken = bcrypt.hashSync(refreshToken, SALT);
 
-    await this.userRepository.tokenUpload(userId, hashedRefreshToken);
+    await this.authRepository.tokenUpload(userId, hashedRefreshToken);
     // RefreshToken을 생성 또는 갱신
     return { accessToken, refreshToken };
   };
