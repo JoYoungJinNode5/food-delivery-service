@@ -5,10 +5,12 @@ import { SALT } from '../constants/auth.constant.js';
 import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from '../constants/env.constant.js';
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
+import * as nodemailer from 'nodemailer';
 
 export class AuthService {
-  constructor(userRepository) {
+  constructor(userRepository, authRepository) {
     this.userRepository = userRepository;
+    this.authRepository = authRepository;
   }
   signUp = async (email, password, passwordConfirm, nickname, name, address, profile_img) => {
     const whereCondition = { email };
@@ -78,6 +80,24 @@ export class AuthService {
     const user = await this.userRepository.findByUser(whereCondition);
     if (user) {
       throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.NICKNAME.DUPLICATED);
+    }
+  };
+
+  verifyEmail = async (serverEmail, content, email, verifyNumber) => {
+    await this.authRepository.createEmailKey(email, verifyNumber);
+    nodemailer.createTransport(serverEmail).sendMail(content, (error, info) => {
+      if (error) {
+        throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.EMAIL.TRANSFER_FAILED);
+      } else {
+        console.log(info);
+        return info.response;
+      }
+    });
+  };
+  verifyEmailInput = async (email, userNumber) => {
+    const sendNumber = await this.authRepository.getEmailKey(email);
+    if (!(sendNumber == userNumber)) {
+      throw new HttpError.Conflict(MESSAGES.AUTH.COMMON.EMAIL.NOT_MACHTED_TRANSFER);
     }
   };
 }
