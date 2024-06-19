@@ -72,6 +72,19 @@ export const MESSAGES = {
     INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
     INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
   },
+
+  CART: {
+    CREATE: {
+      SUCCEED: '장바구니 항목이 성공적으로 추가되었습니다.',
+    },
+    READ: {
+      SUCCEED: '장바구니 항목 조회에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '장바구니 항목 삭제에 성공했습니다.',
+    },
+  },
+
   REVIEW: {
     COMMON: {
       RATING: {
