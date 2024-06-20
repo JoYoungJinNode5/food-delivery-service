@@ -1,30 +1,43 @@
-import { prisma } from "../utils/prisma.util.js";
-
 export class MenuRepository {
-	constructor(prisma) {
-		this.prisma = prisma;
-	}
+  constructor(prisma) {
+    this.prisma = prisma;
+  }
 
-	// 레스토랑 조회
-	findByRestaurantId = async (restaurantId) => {
+  // 메뉴 생성
+  createMenu = async (restaurantId, name, price, image, content) => {
+    return await this.prisma.menu.create({
+      data: {
+        restaurantId,
+        name,
+        price,
+        image,
+        content,
+      },
+    });
+  };
 
-		return await this.prisma.restaurant.findUnique({
-			where: {
-				restaurantId
-			}
-		});
-	}
+  findAll = async (restaurantId) => {
+    return await this.prisma.menu.findMany({
+      where: {
+        restaurantId,
+      },
+    });
+  };
 
-	// 메뉴 생성
-	createMenu = async (name, price, image, content) => {
-		return await this.prisma.menu.create({
-			data: {
-				name,
-				price,
-				image,
-				content
-			}
-		});
-	};
+  findById = async (id) => {
+    return await this.prisma.menu.findUnique({
+      where: {
+        id,
+      },
+    });
+  };
 
+  findByRestaurantIdAndMenuName = async (restaurantId, name) => {
+    return await this.prisma.menu.findFirst({
+      where: {
+        restaurantId,
+        name,
+      },
+    });
+  };
 }

@@ -6,48 +6,67 @@ import { prisma } from '../utils/prisma.util.js';
 const menuRepository = new MenuRepository(prisma);
 
 export class MenuService {
-	constructor(menuRepository) {
-		this.menuRepository = menuRepository;
-	}
+  constructor(menuRepository, restaurantRepository) {
+    this.menuRepository = menuRepository;
+    this.restaurantRepository = restaurantRepository;
+  }
 
-	createMenu = async (name, price, image, content) => {
+  createMenu = async (restaurantId, name, price, image, content) => {
+    const existRestaurant = await this.restaurantRepository.findById(+restaurantId);
+    if (!existRestaurant) {
+      throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
+    }
 
-		if (!name || !price || !image) {
-			throw new HttpError.BadRequest('x');
-		}
-		const createdMenu = await this.menuRepository.createMenu(name, price, image, content);
+    const duplicateMenu = await this.menuRepository.findByRestaurantIdAndMenuName(+restaurantId, name);
+    if (duplicateMenu) {
+      throw new HttpError.NotFound(MESSAGES.MENU.COMMON.NAME.DUPLICATED);
+    }
 
-		return createdMenu;
-	};
+    const createdMenu = await this.menuRepository.createMenu(+restaurantId, name, price, image[0].location, content);
 
-	updateMenu = async (restaurantId, menuId, name, price, image, content) => {
+    return createdMenu;
+  };
 
-		const restaurant = await this.menuRepository.findByRestaurantId(restaurantId);
-		const menu = await this.menuRepository.findByMenuId(menuId);
+  updateMenu = async (restaurantId, menuId, name, price, image, content) => {
+    const restaurant = await this.menuRepository.findByRestaurantId(restaurantId);
+    const menu = await this.menuRepository.findByMenuId(menuId);
 
-		if (!restaurant || !menu) {
-			throw new HttpError.NotFound('x');
-		}
+    if (!restaurant || !menu) {
+      throw new HttpError.NotFound('x');
+    }
 
-		const updatedMenu = await this.menuRepository.updateMenu(name, price, image, content);
+    const updatedMenu = await this.menuRepository.updateMenu(name, price, image, content);
 
-		return updatedMenu;
-	};
+    return updatedMenu;
+  };
 
-	deleteMenu = async (id) => {
-		const menu = await menuRepository.findById(id);
+  deleteMenu = async (id) => {
+    const menu = await menuRepository.findById(id);
 
-		if (!menu) {
-			throw new HttpError(404, MESSAGES.NOT_FOUND);
-		}
+    if (!menu) {
+      throw new HttpError(404, MESSAGES.NOT_FOUND);
+    }
 
-		const deletedMenu = await menuRepository.delete(id);
-		return deletedMenu;
-	};
+    const deletedMenu = await menuRepository.delete(id);
+    return deletedMenu;
+  };
 
-	getMenus = async () => {
-		const menus = await menuRepository.findAll();
-		return menus;
-	};
+  findAll = async (restaurantId) => {
+    const existRestaurant = await this.restaurantRepository.findById(+restaurantId);
+    if (!existRestaurant) {
+      throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
+    }
 
+    const menus = await menuRepository.findAll(+restaurantId);
+    return menus;
+  };
+
+  findById = async (menuId) => {
+    const existMenu = await this.menuRepository.findById(+menuId);
+    if (!existMenu) {
+      throw new HttpError.NotFound(MESSAGES.MENU.COMMON.NOT_FOUND);
+    }
+
+    return existMenu;
+  };
 }
