@@ -32,4 +32,5 @@ authRouter.post('/sign-out', refreshTokenMiddlewareDi, authController.signOut);
 authRouter.post('/verify-email', authController.verifyEmail);
 // 이메일 검증번호 확인
 authRouter.post('/verify-emailInput', authController.verifyEmailInput);
+
 export { authRouter };

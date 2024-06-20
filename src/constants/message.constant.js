@@ -69,6 +69,18 @@ export const MESSAGES = {
 			NOT_FOUND: '이력서가 존재하지 않습니다.',
 		},
 	},
+	USERS: {
+		READ_ME: {
+			SUCCEED: '내 정보 조회에 성공했습니다.',
+		},
+		NOT_FOUND: '존재하지 않는 유저입니다.',
+		UPDATE: {
+			ROLE: {
+				SUCCEED: '권한 변경에 성공하였습니다.',
+				FAILED_ENUM: '권한은 user 혹은 manager로 변경 가능합니다.',
+			},
+		},
+	},
 
 	ORDERS: {
 		CREATE: {

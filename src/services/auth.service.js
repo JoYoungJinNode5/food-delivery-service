@@ -98,6 +98,8 @@ export class AuthService {
     const sendNumber = await this.authRepository.getEmailKey(email);
     if (!(sendNumber == userNumber)) {
       throw new HttpError.Conflict(MESSAGES.AUTH.COMMON.EMAIL.NOT_MACHTED_TRANSFER);
+    } else {
+      await this.authRepository.delEmailKey(email);
     }
   };
 }
