@@ -1,5 +1,3 @@
-import { prisma } from '../utils/prisma.util.js';
-
 export class UserRepository {
   constructor(prisma) {
     this.prisma = prisma;
@@ -33,26 +31,13 @@ export class UserRepository {
       },
     });
   };
-
-  //   tokenUpload = async (userId, refreshToken) => {
-  //     const data = await this.prisma.RefreshToken.upsert({
-  //       where: {
-  //         userId,
-  //       },
-  //       update: {
-  //         refreshToken,
-  //       },
-  //       create: {
-  //         userId,
-  //         refreshToken,
-  //       },
-  //     });
-  //     return data;
-  //   };
-  //   refreshToken = async (userId) => {
-  //     const data = await this.prisma.RefreshToken.findUnique({
-  //       where: { userId },
-  //     });
-  //     return data;
-  //   };
+  changedRole = async (id, role) => {
+    const data = await this.prisma.user.update({
+      where: { id: +id },
+      data: {
+        role,
+      },
+    });
+    return data;
+  };
 }

@@ -51,21 +51,23 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
-  MENU: {
-    CREATE: {
-      SUCCEED: '메뉴가 성공적으로 생성되었습니다.',
+
+  USERS: {
+    READ_ME: {
+      SUCCEED: '내 정보 조회에 성공했습니다.',
     },
+  },
+
+  USERS: {
+    READ_ME: {
+      SUCCEED: '내 정보 조회에 성공했습니다.',
+    },
+    NOT_FOUND: '존재하지 않는 유저입니다.',
     UPDATE: {
-      SUCCEED: '메뉴가 성공적으로 수정되었습니다.',
-    },
-    READ_DETAIL: {
-      SUCCEED: '메뉴 상세 조회에 성공했습니다.',
-    },
-    READ_LIST: {
-      SUCCEED: '메뉴 목록 조회에 성공했습니다.',
-    },
-    DELETE: {
-      SUCCEED: '메뉴가 성공적으로 삭제되었습니다.',
+      ROLE: {
+        SUCCEED: '권한 변경에 성공하였습니다.',
+        FAILED_ENUM: '권한은 user 혹은 manager로 변경 가능합니다.',
+      },
     },
   },
 
@@ -89,20 +91,6 @@ export const MESSAGES = {
     INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
     INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
   },
-
-  CART: {
-    CREATE: {
-      SUCCEED: '장바구니 항목이 성공적으로 추가되었습니다.',
-    },
-    READ: {
-      SUCCEED: '장바구니 항목 조회에 성공했습니다.',
-    },
-    DELETE: {
-      SUCCEED: '장바구니 항목 삭제에 성공했습니다.',
-    },
-    EMPTY: '장바구니가 비어 있습니다.',
-  },
-
   REVIEW: {
     COMMON: {
       RATING: {
@@ -181,6 +169,33 @@ export const MESSAGES = {
     },
     UNLIKE: {
       SUCCEED: '좋아요 취소에 성공했습니다.',
+    },
+  },
+  MENU: {
+    COMMON: {
+      NAME: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+        DUPLICATED: '해당 업장에서 메뉴명이 중복되고 있습니다.',
+      },
+      PRICE: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      NOT_FOUND: '존재하지 않는 메뉴입니다.',
+    },
+    CREATE: {
+      SUCCEED: '메뉴 생성이 완료되었습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '메뉴 목록 조회가 완료되었습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '메뉴 조회가 완료되었습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴 수정이 완료되었습니다.',
     },
   },
 };
