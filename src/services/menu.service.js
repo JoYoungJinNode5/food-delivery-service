@@ -5,38 +5,49 @@ import { prisma } from '../utils/prisma.util.js';
 
 const menuRepository = new MenuRepository(prisma);
 
-export const createMenu = async (name, price, description) => {
-    if (!name || !price || !description) {
-        throw new HttpError(400, MESSAGES.INVALID_INPUT);
-    }
+export class MenuService {
+	constructor(menuRepository) {
+		this.menuRepository = menuRepository;
+	}
 
-    const newMenu = await menuRepository.create({ name, price, description });
-    return newMenu;
-};
+	createMenu = async (name, price, image, content) => {
 
-export const updateMenu = async (id, name, price, description) => {
-    const menu = await menuRepository.findById(id);
+		if (!name || !price || !image) {
+			throw new HttpError.BadRequest('x');
+		}
+		const createdMenu = await this.menuRepository.createMenu(name, price, image, content);
 
-    if (!menu) {
-        throw new HttpError(404, MESSAGES.NOT_FOUND);
-    }
+		return createdMenu;
+	};
 
-    const updatedMenu = await menuRepository.update(id, { name, price, description });
-    return updatedMenu;
-};
+	updateMenu = async (restaurantId, menuId, name, price, image, content) => {
 
-export const deleteMenu = async (id) => {
-    const menu = await menuRepository.findById(id);
+		const restaurant = await this.menuRepository.findByRestaurantId(restaurantId);
+		const menu = await this.menuRepository.findByMenuId(menuId);
 
-    if (!menu) {
-        throw new HttpError(404, MESSAGES.NOT_FOUND);
-    }
+		if (!restaurant || !menu) {
+			throw new HttpError.NotFound('x');
+		}
 
-    const deletedMenu = await menuRepository.delete(id);
-    return deletedMenu;
-};
+		const updatedMenu = await this.menuRepository.updateMenu(name, price, image, content);
 
-export const getMenus = async () => {
-    const menus = await menuRepository.findAll();
-    return menus;
-};
+		return updatedMenu;
+	};
+
+	deleteMenu = async (id) => {
+		const menu = await menuRepository.findById(id);
+
+		if (!menu) {
+			throw new HttpError(404, MESSAGES.NOT_FOUND);
+		}
+
+		const deletedMenu = await menuRepository.delete(id);
+		return deletedMenu;
+	};
+
+	getMenus = async () => {
+		const menus = await menuRepository.findAll();
+		return menus;
+	};
+
+}

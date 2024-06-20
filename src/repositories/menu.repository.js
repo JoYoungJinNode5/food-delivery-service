@@ -1,25 +1,30 @@
+import { prisma } from "../utils/prisma.util.js";
+
 export class MenuRepository {
-   constructor(prisma) {
-     this.prisma = prisma;
-   }
- 
-   async create(data) {
-     return await this.prisma.menu.create({ data });
-   }
+	constructor(prisma) {
+		this.prisma = prisma;
+	}
 
-   async findById(id) {
-     return await this.prisma.menu.findUnique({ where: { id } });
-   }
+	// 레스토랑 조회
+	findByRestaurantId = async (restaurantId) => {
 
-   async update(id, data) {
-     return await this.prisma.menu.update({ where: { id: parseInt(id) }, data });
-   }
+		return await this.prisma.restaurant.findUnique({
+			where: {
+				restaurantId
+			}
+		});
+	}
 
-   async delete(id) {
-     return await this.prisma.menu.delete({ where: { id: parseInt(id) } });
-   }
+	// 메뉴 생성
+	createMenu = async (name, price, image, content) => {
+		return await this.prisma.menu.create({
+			data: {
+				name,
+				price,
+				image,
+				content
+			}
+		});
+	};
 
-   async findAll() {
-     return await this.prisma.menu.findMany();
-   }
 }
