@@ -5,12 +5,14 @@ import { SALT } from '../constants/auth.constant.js';
 import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } from '../constants/env.constant.js';
 import { ACCESS_TOKEN_EXPIRES_IN, REFRESH_TOKEN_EXPIRES_IN } from '../constants/auth.constant.js';
+import * as nodemailer from 'nodemailer';
 
 export class AuthService {
-  constructor(userRepository) {
+  constructor(userRepository, authRepository) {
     this.userRepository = userRepository;
+    this.authRepository = authRepository;
   }
-  signUp = async (email, password, passwordConfirm, nickname, name, address, profile_img) => {
+  signUp = async (email, password, passwordConfirm, nickname, name, address, profileImg) => {
     const whereCondition = { email };
     const isExistUser = await this.userRepository.findByUser(whereCondition);
 
@@ -25,7 +27,7 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT);
-    const userData = await this.userRepository.createUser(email, hashedPassword, nickname, name, address, profile_img);
+    const userData = await this.userRepository.createUser(email, hashedPassword, nickname, name, address, profileImg);
 
     userData.password = undefined;
     return userData;
@@ -52,7 +54,7 @@ export class AuthService {
   };
 
   signOut = async (userId) => {
-    await this.userRepository.signOutUser(userId);
+    await this.authRepository.signOutUser(userId);
   };
 
   generateAuthTokens = async (payload) => {
@@ -68,7 +70,7 @@ export class AuthService {
 
     const hashedRefreshToken = bcrypt.hashSync(refreshToken, SALT);
 
-    await this.userRepository.tokenUpload(userId, hashedRefreshToken);
+    await this.authRepository.tokenUpload(userId, hashedRefreshToken);
     // RefreshToken을 생성 또는 갱신
     return { accessToken, refreshToken };
   };
@@ -78,6 +80,24 @@ export class AuthService {
     const user = await this.userRepository.findByUser(whereCondition);
     if (user) {
       throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.NICKNAME.DUPLICATED);
+    }
+  };
+
+  verifyEmail = async (serverEmail, content, email, verifyNumber) => {
+    await this.authRepository.createEmailKey(email, verifyNumber);
+    nodemailer.createTransport(serverEmail).sendMail(content, (error, info) => {
+      if (error) {
+        throw new HttpError.BadRequest(MESSAGES.AUTH.COMMON.EMAIL.TRANSFER_FAILED);
+      } else {
+        console.log(info);
+        return info.response;
+      }
+    });
+  };
+  verifyEmailInput = async (email, userNumber) => {
+    const sendNumber = await this.authRepository.getEmailKey(email);
+    if (!(sendNumber == userNumber)) {
+      throw new HttpError.Conflict(MESSAGES.AUTH.COMMON.EMAIL.NOT_MACHTED_TRANSFER);
     }
   };
 }

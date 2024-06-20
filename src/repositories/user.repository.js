@@ -11,7 +11,7 @@ export class UserRepository {
     return isExistUser;
   };
 
-  createUser = async (email, password, nickname, name, address, profile_img) => {
+  createUser = async (email, password, nickname, name, address, profileImg) => {
     const userData = await this.prisma.user.create({
       data: {
         email,
@@ -19,7 +19,7 @@ export class UserRepository {
         nickname,
         name,
         address,
-        profile_img,
+        profileImg,
       },
     });
     return userData;
@@ -34,35 +34,25 @@ export class UserRepository {
     });
   };
 
-  tokenUpload = async (userId, refreshToken) => {
-    const data = await this.prisma.RefreshToken.upsert({
-      where: {
-        userId,
-      },
-      update: {
-        refreshToken,
-      },
-      create: {
-        userId,
-        refreshToken,
-      },
-    });
-    return data;
-  };
-  refreshToken = async (userId) => {
-    const data = await this.prisma.RefreshToken.findUnique({
-      where: { userId },
-    });
-    return data;
-  };
-
-  //유저 포인트 차감
-  updateUserPoints = async (userId, points) => {
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        point: points,
-      },
-    });
-  };
+  //   tokenUpload = async (userId, refreshToken) => {
+  //     const data = await this.prisma.RefreshToken.upsert({
+  //       where: {
+  //         userId,
+  //       },
+  //       update: {
+  //         refreshToken,
+  //       },
+  //       create: {
+  //         userId,
+  //         refreshToken,
+  //       },
+  //     });
+  //     return data;
+  //   };
+  //   refreshToken = async (userId) => {
+  //     const data = await this.prisma.RefreshToken.findUnique({
+  //       where: { userId },
+  //     });
+  //     return data;
+  //   };
 }

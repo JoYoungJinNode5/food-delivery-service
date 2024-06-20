@@ -82,21 +82,21 @@ model OrderItem {
 
 model Restaurant {
   id          Int      @id @default(autoincrement())
-  managerId   Int      @unique @map("manager_id")
+  userId      Int      @unique
   name        String   @map("name")
-  image       String
+  image       String?
   category    Category @map("category")
   address     String
   content     String   @db.Text
-  openingTime DateTime @map("opening_time")
+  openingTime String?  @map("opening_time")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
-  user          User            @relation(fields: [managerId], references: [id], onDelete: Cascade)
   like          Like[]
   order         Order[]
   menu          Menu[]
   restaurantLog RestaurantLog[]
+  user          User            @relation(fields: [userId], references: [id])
 
   @@map("restaurant")
 }
@@ -112,12 +112,12 @@ model Like {
 }
 
 model Review {
-  id           Int      @id @default(autoincrement())
-  orderId      Int      @unique @map("order_id")
-  content      String?  @db.Text
-  rating       Int
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @unique @map("order_id")
+  content   String?  @db.Text
+  rating    Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   reviewimage ReivewImage[]
   order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
