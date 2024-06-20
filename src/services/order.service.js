@@ -1,6 +1,7 @@
 import { OrderRepository } from '../repositories/order.repository.js';
 import { UserRepository } from '../repositories/user.repository.js'; // 유저 리포지토리 추가
-// import { MenuRepository } from '../repositories/menu.repository.js';//메뉴 리포지토리 생성되면 주석 해제
+import { MenuRepository } from '../repositories/menu.repository.js'; //메뉴 리포지토리 생성되면 주석 해제
+import { CartRepository } from '../repositories/cart.repository.js';
 import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
 
@@ -8,24 +9,22 @@ export class OrderService {
   constructor() {
     this.orderRepository = new OrderRepository();
     this.userRepository = new UserRepository();
-    // this.menuRepository = new MenuRepository();
+    this.menuRepository = new MenuRepository();
+    this.cartRepository = new CartRepository();
   }
 
-  async createOrder(data) {
-    const { userId, restaurantId, orderItems, address } = data;
+  async createOrderFromCart(userId, address) {
+    const cartItems = await this.cartRepository.getCartItems(userId);
 
-    const orderItemsData = [];
-    for (const item of orderItems) {
-      const menuItem = await this.menuRepository.getMenuById(item.menuId); //메뉴 리포지토리 생성되면 주석 해제
-      if (!menuItem || menuItem.restaurantId !== restaurantId) {
-        throw new HttpError.BadRequest(MESSAGES.ORDERS.INVALID_MENU_ITEM);
-      }
-      orderItemsData.push({
-        productId: item.menuId,
-        quantity: item.quantity,
-        price: menuItem.price,
-      });
+    if (cartItems.length === 0) {
+      throw new HttpError.BadRequest(MESSAGES.CART.EMPTY);
     }
+
+    const orderItemsData = cartItems.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.product.price,
+    }));
 
     // 주문 총 가격 계산
     const totalPrice = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -40,7 +39,7 @@ export class OrderService {
     try {
       const order = await this.orderRepository.createOrderWithTransaction({
         userId,
-        restaurantId,
+        restaurantId: cartItems[0].product.restaurantId, // 모든 항목의 restaurantId가 동일하다고 가정
         orderStatus: 'PENDING', // 기본값 설정
         deliverStatus: 'PENDING', // 기본값 설정
         orderItems: orderItemsData,
@@ -48,6 +47,9 @@ export class OrderService {
         address,
         userPoint: user.point - totalPrice,
       });
+
+      await this.cartRepository.clearCart(userId);
+
       return order;
     } catch (error) {
       throw new HttpError.InternalServerError(error.message);
@@ -88,10 +90,10 @@ export class OrderService {
 }
 
 //메뉴 리파지토리에서 메뉴 아이디 찾기
-// export class MenuRepository {
-//   async getMenuById(menuId) {
-//     return prisma.menu.findUnique({
-//       where: { id: menuId }
-//     });
-//   }
-// }
+export class MenuRepository {
+  async getMenuById(menuId) {
+    return prisma.menu.findUnique({
+      where: { id: menuId },
+    });
+  }
+}

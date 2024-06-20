@@ -51,6 +51,23 @@ export const MESSAGES = {
       SUCCEED: '토큰 재발급에 성공했습니다.',
     },
   },
+  MENU: {
+    CREATE: {
+      SUCCEED: '메뉴가 성공적으로 생성되었습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴가 성공적으로 수정되었습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '메뉴 상세 조회에 성공했습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '메뉴 목록 조회에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '메뉴가 성공적으로 삭제되었습니다.',
+    },
+  },
 
   ORDERS: {
     CREATE: {
@@ -83,6 +100,7 @@ export const MESSAGES = {
     DELETE: {
       SUCCEED: '장바구니 항목 삭제에 성공했습니다.',
     },
+    EMPTY: '장바구니가 비어 있습니다.',
   },
 
   REVIEW: {

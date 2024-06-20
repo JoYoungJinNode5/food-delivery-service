@@ -25,4 +25,9 @@ export class CartRepository {
       where: { id: cartItemId },
     });
   }
+  async clearCart(userId) {
+    return prisma.cart.deleteMany({
+      where: { userId: userId },
+    });
+  }
 }
