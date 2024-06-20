@@ -77,6 +77,14 @@ export class OrderRepository {
       },
     });
   }
+
+  findById = (id) => {
+    return prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+  };
 }
 
 export class MenuRepository {
