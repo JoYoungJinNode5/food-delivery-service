@@ -5,7 +5,8 @@ export class CartRepository {
     return prisma.cart.create({
       data: {
         userId: data.userId,
-        productId: data.productId,
+        menuId: data.menuId,
+        restaurantId: data.restaurantId,
         quantity: data.quantity,
       },
     });
@@ -15,7 +16,8 @@ export class CartRepository {
     return prisma.cart.findMany({
       where: { userId: userId },
       include: {
-        product: true,
+        menu: true,
+        restaurant: true,
       },
     });
   }
@@ -25,6 +27,7 @@ export class CartRepository {
       where: { id: cartItemId },
     });
   }
+
   async clearCart(userId) {
     return prisma.cart.deleteMany({
       where: { userId: userId },

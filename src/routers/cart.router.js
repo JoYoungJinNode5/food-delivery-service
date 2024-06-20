@@ -10,15 +10,11 @@ const cartRepository = new CartRepository(prisma);
 const cartService = new CartService(cartRepository);
 const cartController = new CartController(cartService);
 
-const asyncHandler = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
-
 // 장바구니 추가 api
-cartRouter.post('/cart', accessTokenMiddleware, asyncHandler(cartController.addItemToCart));
+cartRouter.post('/', accessTokenMiddleware, cartController.addItemToCart);
 // 장바구니 조회 api
-cartRouter.get('/cart', accessTokenMiddleware, asyncHandler(cartController.getCartItems));
+cartRouter.get('/', accessTokenMiddleware, cartController.getCartItems);
 // 장바구니 항목 삭제 api
-cartRouter.delete('/cart/:cartItemId', accessTokenMiddleware, asyncHandler(cartController.deleteCartItem));
+cartRouter.delete('/:cartItemId', accessTokenMiddleware, cartController.deleteCartItem);
 
 export { cartRouter };

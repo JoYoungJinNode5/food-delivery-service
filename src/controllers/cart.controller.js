@@ -8,10 +8,12 @@ export class CartController {
 
   addItemToCart = async (req, res, next) => {
     try {
+      const { menuId, restaurantId, quantity } = req.body;
       const data = {
         userId: req.user.id,
-        productId: req.body.productId,
-        quantity: req.body.quantity,
+        menuId,
+        restaurantId,
+        quantity,
       };
       const cartItem = await this.cartService.addItemToCart(data);
       return res.status(HTTP_STATUS.CREATED).json({

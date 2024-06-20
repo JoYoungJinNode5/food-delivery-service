@@ -1,6 +1,3 @@
-// import { HttpError } from '../errors/http.error.js';
-// import { MESSAGES } from '../constants/message.constant.js';
-
 export class CartService {
   constructor(cartRepository) {
     this.cartRepository = cartRepository;
@@ -16,5 +13,9 @@ export class CartService {
 
   async deleteCartItem(cartItemId) {
     return this.cartRepository.deleteCartItem(cartItemId);
+  }
+
+  async clearCart(userId) {
+    return this.cartRepository.clearCart(userId);
   }
 }

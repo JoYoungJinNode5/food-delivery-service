@@ -14,7 +14,7 @@ const apiRouter = express.Router();
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/restaurants', restaurantRouter);
 apiRouter.use('/orders', orderRouter);
-apiRouter.use('/menu', menuRouter);
+apiRouter.use('/restaurants/:restaurantId/menus', menuRouter);
 apiRouter.use('/restaurants/:restaurantId/reviews', reviewRouter);
 apiRouter.use('/restaurants/:restaurantId/likes', likeRouter);
 apiRouter.use('/carts', cartRouter);
