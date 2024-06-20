@@ -170,4 +170,28 @@ export const MESSAGES = {
       SUCCEED: '좋아요 취소에 성공했습니다.',
     },
   },
+  MENU: {
+    COMMON: {
+      NAME: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+        DUPLICATED: '해당 업장에서 메뉴명이 중복되고 있습니다.',
+      },
+      PRICE: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      NOT_FOUND: '존재하지 않는 메뉴입니다.',
+    },
+    CREATE: {
+      SUCCEED: '메뉴 생성이 완료되었습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '메뉴 목록 조회가 완료되었습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '메뉴 조회가 완료되었습니다.',
+    },
+  },
 };

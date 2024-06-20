@@ -9,12 +9,18 @@ export class MenuService {
 		this.restaurantRepository = restaurantRepository;
 	}
 
-	createMenu = async (name, price, image, content) => {
-
-		if (!name || !price || !image) {
-			throw new HttpError.BadRequest('x');
+	createMenu = async (restaurantId, name, price, image, content) => {
+		const existRestaurant = await this.restaurantRepository.findById(+restaurantId);
+		if (!existRestaurant) {
+			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
 		}
-		const createdMenu = await this.menuRepository.createMenu(name, price, image, content);
+
+		const duplicateMenu = await this.menuRepository.findByRestaurantIdAndMenuName(+restaurantId, name);
+		if (duplicateMenu) {
+			throw new HttpError.NotFound(MESSAGES.MENU.COMMON.NAME.DUPLICATED);
+		}
+
+		const createdMenu = await this.menuRepository.createMenu(+restaurantId, name, price, image[0].location, content);
 
 		return createdMenu;
 	};
@@ -47,4 +53,22 @@ export class MenuService {
 		return deletedMenu;
 	};
 
+	findAll = async (restaurantId) => {
+		const existRestaurant = await this.restaurantRepository.findById(+restaurantId);
+		if (!existRestaurant) {
+			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
+		}
+
+		const menus = await menuRepository.findAll(+restaurantId);
+		return menus;
+	};
+
+	findById = async (menuId) => {
+		const existMenu = await this.menuRepository.findById(+menuId);
+		if (!existMenu) {
+			throw new HttpError.NotFound(MESSAGES.MENU.COMMON.NOT_FOUND);
+		}
+
+		return existMenu;
+	};
 }
