@@ -2,25 +2,11 @@ import multerS3 from 'multer-s3';
 import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { S3Client } from '@aws-sdk/client-s3';
-import {
-  AWS_BUCKET_NAME,
-  AWS_REGION,
-  AWS_S3_ACCESS_KEY,
-  AWS_S3_SECRET_KEY,
-  IMAGE_PARAM_NAME,
-} from '../constants/file.constant.js';
+import { s3Client } from '../utils/file-upload.util.js';
+import { AWS_BUCKET_NAME, IMAGE_PARAM_NAME } from '../constants/file.constant.js';
 import { MAX_REVIEW_IMAGE } from '../constants/review.constant.js';
 import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
-
-const s3Client = new S3Client({
-  region: AWS_REGION,
-  credentials: {
-    accessKeyId: AWS_S3_ACCESS_KEY,
-    secretAccessKey: AWS_S3_SECRET_KEY,
-  },
-});
 
 const imageFileFilter = (req, file, cb) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
@@ -76,14 +62,6 @@ const fileUploadMiddleware = (folderName, jsonFieldName = 'data') => {
         next(error);
       }
     });
-  };
-};
-
-const fileDeleteMiddleware = (folderName) => {
-  const upload = createMulter(folderName).array(IMAGE_PARAM_NAME, setMaxFile(folderName));
-
-  return (req, res, next) => {
-    s3Client.deleteObject;
   };
 };
 

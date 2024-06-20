@@ -94,6 +94,7 @@ export const MESSAGES = {
     UPDATE: {
       SUCCEED: '주문 상태 변경에 성공했습니다.',
     },
+    NOT_FOUND: '존재하지 않는 주문입니다.',
     INSUFFICIENT_POINTS: '포인트가 부족합니다.',
     INVALID_MENU_ITEM: '유효하지 않은 메뉴 항목입니다.',
     INVALID_MENU_QUANTITY: '메뉴 항목과 수량이 일치하지 않습니다.',
@@ -107,6 +108,7 @@ export const MESSAGES = {
         REQUIRED: '주문 기록이 존재하지 않습니다.',
       },
       NOT_FOUND: '리뷰가 존재하지 않습니다.',
+      DUPLICATED: '이미 리뷰가 존재하는 주문입니다.',
     },
     CREATE: {
       SUCCEED: '리뷰 작성에 성공했습니다.',
