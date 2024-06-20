@@ -18,6 +18,14 @@ export class ReviewRepository {
     });
   };
 
+  findByOrderId = async (orderId) => {
+    return await this.prisma.review.findUnique({
+      where: {
+        orderId,
+      },
+    });
+  };
+
   findAll = async (restaurantId) => {
     return await this.prisma.review.findMany({
       where: {
