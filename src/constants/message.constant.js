@@ -56,15 +56,7 @@ export const MESSAGES = {
     READ_ME: {
       SUCCEED: '내 정보 조회에 성공했습니다.',
     },
-    NOT_FOUND: '존재하지 않는 유저입니다.',
-    UPDATE: {
-      ROLE: {
-        SUCCEED: '권한 변경에 성공하였습니다.',
-        FAILED_ENUM: '권한은 user 혹은 manager로 변경 가능합니다.',
-      },
-    },
   },
-
   RESUMES: {
     COMMON: {
       TITLE: {
@@ -75,6 +67,18 @@ export const MESSAGES = {
         // MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
       },
       NOT_FOUND: '이력서가 존재하지 않습니다.',
+    },
+  },
+  USERS: {
+    READ_ME: {
+      SUCCEED: '내 정보 조회에 성공했습니다.',
+    },
+    NOT_FOUND: '존재하지 않는 유저입니다.',
+    UPDATE: {
+      ROLE: {
+        SUCCEED: '권한 변경에 성공하였습니다.',
+        FAILED_ENUM: '권한은 user 혹은 manager로 변경 가능합니다.',
+      },
     },
   },
 
@@ -178,6 +182,33 @@ export const MESSAGES = {
     },
     UNLIKE: {
       SUCCEED: '좋아요 취소에 성공했습니다.',
+    },
+  },
+  MENU: {
+    COMMON: {
+      NAME: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+        DUPLICATED: '해당 업장에서 메뉴명이 중복되고 있습니다.',
+      },
+      PRICE: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      CONTENT: {
+        REQUIRED: '메뉴명을 입력해 주세요.',
+      },
+      NOT_FOUND: '존재하지 않는 메뉴입니다.',
+    },
+    CREATE: {
+      SUCCEED: '메뉴 생성이 완료되었습니다.',
+    },
+    READ_LIST: {
+      SUCCEED: '메뉴 목록 조회가 완료되었습니다.',
+    },
+    READ_DETAIL: {
+      SUCCEED: '메뉴 조회가 완료되었습니다.',
+    },
+    UPDATE: {
+      SUCCEED: '메뉴 수정이 완료되었습니다.',
     },
   },
 };
