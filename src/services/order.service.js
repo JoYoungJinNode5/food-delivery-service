@@ -1,16 +1,12 @@
-import { OrderRepository } from '../repositories/order.repository.js';
-import { UserRepository } from '../repositories/user.repository.js'; // 유저 리포지토리 추가
-import { MenuRepository } from '../repositories/menu.repository.js'; //메뉴 리포지토리 생성되면 주석 해제
-import { CartRepository } from '../repositories/cart.repository.js';
 import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
 
 export class OrderService {
-  constructor() {
-    this.orderRepository = new OrderRepository();
-    this.userRepository = new UserRepository();
-    this.menuRepository = new MenuRepository();
-    this.cartRepository = new CartRepository();
+  constructor(orderRepository, userRepository, menuRepository, cartRepository) {
+    this.orderRepository = orderRepository;
+    this.userRepository = userRepository;
+    this.menuRepository = menuRepository;
+    this.cartRepository = cartRepository;
   }
 
   async createOrderFromCart(userId, address) {

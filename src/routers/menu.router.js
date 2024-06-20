@@ -10,19 +10,15 @@ const menuRepository = new MenuRepository(prisma);
 const menuService = new MenuService(menuRepository);
 const menuController = new MenuController(menuService);
 
-const asyncHandler = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
-
 // 메뉴 생성 api
-menuRouter.post('/menus', accessTokenMiddleware, asyncHandler(menuController.createMenu));
+menuRouter.post('/menus', accessTokenMiddleware, menuController.createMenu);
 // 메뉴 수정 api
-menuRouter.patch('/menus/:menuId', accessTokenMiddleware, asyncHandler(menuController.updateMenu));
+menuRouter.patch('/menus/:menuId', accessTokenMiddleware, menuController.updateMenu);
 // 메뉴 상세 조회 api
-menuRouter.get('/menus/:menuId', asyncHandler(menuController.getMenuById));
+menuRouter.get('/menus/:menuId', menuController.getMenuById);
 // 메뉴 목록 조회 api
-menuRouter.get('/menus', asyncHandler(menuController.getAllMenus));
+menuRouter.get('/menus', menuController.getAllMenus);
 // 메뉴 삭제 api
-menuRouter.delete('/menus/:menuId', accessTokenMiddleware, asyncHandler(menuController.deleteMenu));
+menuRouter.delete('/menus/:menuId', accessTokenMiddleware, menuController.deleteMenu);
 
 export { menuRouter };

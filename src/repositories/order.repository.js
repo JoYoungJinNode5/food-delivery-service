@@ -1,6 +1,10 @@
 import { prisma } from '../utils/prisma.util.js';
 
 export class OrderRepository {
+  constructor(orderItemRepository) {
+    this.orderItemRepository = orderItemRepository;
+  }
+
   async createOrderWithTransaction(data) {
     const { userId, restaurantId, orderStatus, deliverStatus, orderItems, totalPrice, userPoint, address } = data;
 
@@ -71,6 +75,14 @@ export class OrderRepository {
         orderStatus,
         deliverStatus,
       },
+    });
+  }
+}
+
+export class MenuRepository {
+  async getMenuById(menuId) {
+    return prisma.menu.findUnique({
+      where: { id: menuId },
     });
   }
 }
