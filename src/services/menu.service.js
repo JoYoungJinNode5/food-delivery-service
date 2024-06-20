@@ -3,11 +3,10 @@ import { MESSAGES } from '../constants/message.constant.js';
 import { MenuRepository } from '../repositories/menu.repository.js';
 import { prisma } from '../utils/prisma.util.js';
 
-const menuRepository = new MenuRepository(prisma);
-
 export class MenuService {
-	constructor(menuRepository) {
+	constructor(menuRepository, restaurantRepository) {
 		this.menuRepository = menuRepository;
+		this.restaurantRepository = restaurantRepository;
 	}
 
 	createMenu = async (name, price, image, content) => {
@@ -19,35 +18,33 @@ export class MenuService {
 
 		return createdMenu;
 	};
-
+	// 메뉴 수정
 	updateMenu = async (restaurantId, menuId, name, price, image, content) => {
 
-		const restaurant = await this.menuRepository.findByRestaurantId(restaurantId);
+		const restaurant = await this.restaurantRepository.findById(restaurantId);
 		const menu = await this.menuRepository.findByMenuId(menuId);
 
 		if (!restaurant || !menu) {
 			throw new HttpError.NotFound('x');
 		}
 
-		const updatedMenu = await this.menuRepository.updateMenu(name, price, image, content);
+		const updatedMenu = await this.menuRepository.updateMenu(menuId, name, price, image, content);
 
 		return updatedMenu;
 	};
 
-	deleteMenu = async (id) => {
-		const menu = await menuRepository.findById(id);
+
+	// 메뉴 삭제
+	deleteMenu = async (restaurantId, menuId) => {
+
+		const menu = await this.menuRepository.findById(menuId);
 
 		if (!menu) {
-			throw new HttpError(404, MESSAGES.NOT_FOUND);
+			throw new HttpError.NotFound(MESSAGES.NOT_FOUND);
 		}
 
-		const deletedMenu = await menuRepository.delete(id);
+		const deletedMenu = await this.menuRepository.deleteMenu(menuId);
 		return deletedMenu;
-	};
-
-	getMenus = async () => {
-		const menus = await menuRepository.findAll();
-		return menus;
 	};
 
 }

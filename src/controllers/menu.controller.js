@@ -6,6 +6,7 @@ export class MenuController {
 		this.menuService = menuService;
 	}
 
+	// 메뉴 생성
 	createMenu = async (req, res, next) => {
 		try {
 
@@ -22,7 +23,7 @@ export class MenuController {
 		}
 	};
 
-	updateMenu = async (req, res, next) {
+	updateMenu = async (req, res, next) => {
 		try {
 			const { restaurantId, menuId } = req.params;
 			const { name, price, image, content } = req.body;
@@ -39,13 +40,19 @@ export class MenuController {
 		}
 	}
 
-	async deleteMenu(req, res) {
+	deleteMenu = async (req, res) => {
 		try {
-			const { id } = req.params;
-			const deletedMenu = await deleteMenu(id);
-			res.status(200).json(deletedMenu);
+			const { restaurantId, menuId } = req.params;
+
+			const deletedMenu = await this.menuService.deleteMenu(restaurantId, menuId);
+
+			return res.status(HTTP_STATUS.OK).json({
+				status: HTTP_STATUS.OK,
+				message: '',
+				data: deletedMenu
+			});
 		} catch (error) {
-			res.status(error.status || 500).json({ message: error.message });
+			next(err);
 		}
 	}
 
