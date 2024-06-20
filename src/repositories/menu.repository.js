@@ -27,7 +27,7 @@ export class MenuRepository {
 	findById = async (id) => {
 		return await this.prisma.menu.findUnique({
 			where: {
-				id,
+				id: +id,
 			},
 		});
 	};
@@ -41,29 +41,25 @@ export class MenuRepository {
 		});
 	};
 	// 메뉴 수정
-	updatedMenu = async (menuId, name, price, image, content) => {
+	updateMenu = async (id, name, price, image, content) => {
 		return await this.prisma.menu.update({
 			where: {
-				id: +menuId,
+				id: +id,
 			},
 			data: {
-				...(name && { name }),
-				...(content && { content }),
-				...(price && { price }),
-				...(image && { image }),
-				...(content && { content }),
+				name,
+				price,
+				image,
+				content
 			}
 		});
 	}
 
 	// 메뉴 삭제
 	deleteMenu = async (menuId) => {
-		return await this.prisma.menu.findUnique({
+		return await this.prisma.menu.delete({
 			where: {
 				id: +menuId
-			},
-			include: {
-				restaurant: true,
 			},
 		});
 	}

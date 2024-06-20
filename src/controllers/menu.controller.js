@@ -24,14 +24,15 @@ export class MenuController {
 
 	updateMenu = async (req, res, next) => {
 		try {
-			const { restaurantId, menuId } = req.params;
-			const { name, price, image, content } = req.body;
+			const { menuId } = req.params;
+			const { name, price, content } = req.body;
+			const { image } = req.files;
 
-			const updatedMenu = await this.menuService.updateMenu(restaurantId, menuId, name, price, image, content);
+			const updatedMenu = await this.menuService.updateMenu(menuId, name, price, image, content);
 
 			return res.status(HTTP_STATUS.OK).json({
 				status: HTTP_STATUS.OK,
-				message: '',
+				message: MESSAGES.MENU.UPDATE.SUCCEED,
 				data: updatedMenu,
 			});
 		} catch (err) {
@@ -39,7 +40,7 @@ export class MenuController {
 		}
 	};
 
-	deleteMenu = async (req, res) => {
+	deleteMenu = async (req, res, next) => {
 		try {
 			const { restaurantId, menuId } = req.params;
 
@@ -47,13 +48,13 @@ export class MenuController {
 
 			return res.status(HTTP_STATUS.OK).json({
 				status: HTTP_STATUS.OK,
-				message: '',
+				message: '삭제 완료',
 				data: deletedMenu
 			});
-		} catch (error) {
+		} catch (err) {
 			next(err);
 		}
-	}
+	};
 
 	findAll = async (req, res, next) => {
 		try {

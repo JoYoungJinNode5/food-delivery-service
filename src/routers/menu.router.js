@@ -9,16 +9,13 @@ import { createMenuValidator } from '../middlewares/validators/create-menu-valid
 import { fileUploadMiddleware } from '../middlewares/file-upload.middleware.js';
 import { requireRoles } from '../middlewares/require.roles.middleware.js';
 import { USER_ROLE } from '../constants/role.constants.js';
-import { RestaurantService } from '../services/restaurant.service.js';
-import { RestaurantRepository } from '../repositories/restaurant.repository.js';
-import { accessTokenMiddleware } from '../middlewares/require-access-token.middleware.js';
-import { requireRoles } from '../middlewares/require.roles.middleware.js';
+// import { RestaurantService } from '../services/restaurant.service.js';
 
 const menuRouter = express.Router({ mergeParams: true });
 
 const restaurantRepository = new RestaurantRepository(prisma);
 const menuRepository = new MenuRepository(prisma);
-const menuService = new MenuService(menuRepository, restaurantRepository);
+const menuService = new MenuService(menuRepository);
 const menuController = new MenuController(menuService);
 
 // 메뉴 생성
@@ -32,10 +29,10 @@ menuRouter.post(
 );
 
 // 메뉴 수정
-menuRouter.put('/:restaurantsId/menu/:menuId', accessTokenMiddleware, requireRoles, menuController.updateMenu);
+menuRouter.put('/:menuId', accessTokenMiddleware, fileUploadMiddleware('menu'), requireRoles([USER_ROLE.MANAGER]), menuController.updateMenu);
 
 // 메뉴 삭제
-menuRouter.delete('/:restaurantId/menu/:menuId', accessTokenMiddleware, requireRoles, menuController.deleteMenu);
+menuRouter.delete('/:menuId', accessTokenMiddleware, fileUploadMiddleware('menu'), requireRoles([USER_ROLE.MANAGER]), menuController.deleteMenu);
 
 // 메뉴 목록 조회
 menuRouter.get('/', menuController.findAll);
