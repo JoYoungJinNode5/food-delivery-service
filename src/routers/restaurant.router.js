@@ -19,10 +19,23 @@ const restaurantService = new RestaurantService(restaurantRepository);
 const restaurantController = new RestaurantController(restaurantService);
 
 // 업장 생성
-restaurantRouter.post('/', fileUploadMiddleware('restaurant'), accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), createRestaurantValidator, restaurantController.createRestaurant);
+restaurantRouter.post(
+  '/',
+  fileUploadMiddleware('restaurant'),
+  accessTokenMiddleware,
+  requireRoles([USER_ROLE.MANAGER]),
+  createRestaurantValidator,
+  restaurantController.createRestaurant,
+);
 
 // 업장 정보 수정
-restaurantRouter.put('/:restaurantId', accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), updateRestaurantValidator, restaurantController.updateRestaurant);
+restaurantRouter.patch(
+  '/:restaurantId',
+  accessTokenMiddleware,
+  requireRoles([USER_ROLE.MANAGER]),
+  updateRestaurantValidator,
+  restaurantController.updateRestaurant,
+);
 
 // 업장 상세 조회
 restaurantRouter.get('/:restaurantId', restaurantController.getRestaurant);
@@ -30,9 +43,12 @@ restaurantRouter.get('/:restaurantId', restaurantController.getRestaurant);
 // 키워드 기반 업장 목록 조회
 restaurantRouter.get('/', requireKeywords, restaurantController.getAllRestaurants);
 
-
 // 업장 삭제
-restaurantRouter.delete('/:restaurantId', accessTokenMiddleware, requireRoles([USER_ROLE.MANAGER]), restaurantController.deleteRestaurant);
-
+restaurantRouter.delete(
+  '/:restaurantId',
+  accessTokenMiddleware,
+  requireRoles([USER_ROLE.MANAGER]),
+  restaurantController.deleteRestaurant,
+);
 
 export { restaurantRouter };

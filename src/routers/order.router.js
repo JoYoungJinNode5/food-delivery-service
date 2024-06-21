@@ -8,6 +8,8 @@ import { OrderController } from '../controllers/order.controller.js';
 import { accessTokenMiddleware } from '../middlewares/require-access-token.middleware.js';
 import { UserRepository } from '../repositories/user.repository.js';
 import { CartRepository } from '../repositories/cart.repository.js';
+import { requireRoles } from '../middlewares/require.roles.middleware.js';
+import { USER_ROLE } from '../constants/role.constants.js';
 
 const orderRouter = express.Router();
 const userRepository = new UserRepository(prisma);
@@ -27,6 +29,11 @@ orderRouter.get('/:orderId', accessTokenMiddleware, orderController.getOrderById
 // 주문 내역 목록 조회 api
 orderRouter.get('/', accessTokenMiddleware, orderController.getAllOrders);
 // 주문 내역 상태 변경 api
-orderRouter.patch('/:orderId/status', accessTokenMiddleware, orderController.updateOrderStatus);
+orderRouter.patch(
+  '/:orderId/status',
+  accessTokenMiddleware,
+  requireRoles([USER_ROLE.MANAGER]),
+  orderController.updateOrderStatus,
+);
 
 export { orderRouter };

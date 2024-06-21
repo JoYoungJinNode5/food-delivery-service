@@ -3,7 +3,7 @@ import { MESSAGES } from '../constants/message.constant.js';
 import { createResponse } from '../utils/response.util.js';
 
 export class MenuController {
-  constructor(menuService) {
+  constructor(menuService, restaurantRepository) {
     this.menuService = menuService;
   }
 
@@ -25,8 +25,7 @@ export class MenuController {
   updateMenu = async (req, res, next) => {
     try {
       const { menuId } = req.params;
-      const { name, price, content } = req.body;
-      const { image } = req.files;
+      const { name, price, content, image } = req.body;
 
       const updatedMenu = await this.menuService.updateMenu(menuId, name, price, image, content);
 

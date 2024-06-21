@@ -15,8 +15,8 @@ const menuRouter = express.Router({ mergeParams: true });
 
 const restaurantRepository = new RestaurantRepository(prisma);
 const menuRepository = new MenuRepository(prisma);
-const menuService = new MenuService(menuRepository);
-const menuController = new MenuController(menuService);
+const menuService = new MenuService(menuRepository, restaurantRepository);
+const menuController = new MenuController(menuService, restaurantRepository);
 
 // 메뉴 생성
 menuRouter.post(
@@ -29,7 +29,7 @@ menuRouter.post(
 );
 
 // 메뉴 수정
-menuRouter.put(
+menuRouter.patch(
   '/:menuId',
   accessTokenMiddleware,
   fileUploadMiddleware('menu'),

@@ -24,7 +24,7 @@ export class OrderController {
 
   cancelOrder = async (req, res, next) => {
     try {
-      const { orderId } = req.params;
+      const orderId = parseInt(req.params.orderId, 10); // orderId를 정수로 변환
       await this.orderService.cancelOrder(orderId);
       return res.status(HTTP_STATUS.OK).json({
         status: res.statusCode,
@@ -37,7 +37,7 @@ export class OrderController {
 
   getOrderById = async (req, res, next) => {
     try {
-      const { orderId } = req.params;
+      const orderId = parseInt(req.params.orderId, 10); // orderId를 정수로 변환
       const data = await this.orderService.getOrderById(orderId);
       return res.status(HTTP_STATUS.OK).json({
         status: res.statusCode,
@@ -65,7 +65,7 @@ export class OrderController {
 
   updateOrderStatus = async (req, res, next) => {
     try {
-      const { orderId } = req.params;
+      const orderId = parseInt(req.params.orderId, 10); // orderId를 정수로 변환
       const { orderStatus, deliverStatus } = req.body;
       const data = await this.orderService.updateOrderStatus(orderId, orderStatus, deliverStatus);
       return res.status(HTTP_STATUS.OK).json({

@@ -65,6 +65,18 @@ export const MESSAGES = {
     },
   },
 
+  CART: {
+    CREATE: {
+      SUCCEED: '장바구니 항목이 성공적으로 추가되었습니다.',
+    },
+    READ: {
+      SUCCEED: '장바구니 항목 조회에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '장바구니 항목 삭제에 성공했습니다.',
+    },
+  },
+
   ORDERS: {
     CREATE: {
       SUCCEED: '주문 생성에 성공했습니다.',

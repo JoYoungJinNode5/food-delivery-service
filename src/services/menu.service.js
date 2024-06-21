@@ -2,8 +2,9 @@ import { HttpError } from '../errors/http.error.js';
 import { MESSAGES } from '../constants/message.constant.js';
 
 export class MenuService {
-  constructor(menuRepository) {
+  constructor(menuRepository, restaurantRepository) {
     this.menuRepository = menuRepository;
+    this.restaurantRepository = restaurantRepository;
   }
 
   createMenu = async (restaurantId, name, price, image, content) => {

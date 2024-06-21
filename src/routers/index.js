@@ -11,7 +11,7 @@ import { likeRouter } from './like.router.js';
 const apiRouter = express.Router();
 
 apiRouter.use('/auth', authRouter);
-apiRouter.use('/user', userRouter);
+apiRouter.use('/users', userRouter);
 apiRouter.use('/restaurants', restaurantRouter);
 apiRouter.use('/orders', orderRouter);
 apiRouter.use('/restaurants/:restaurantId/menus', menuRouter);
