@@ -15,24 +15,36 @@ const menuRouter = express.Router({ mergeParams: true });
 
 const restaurantRepository = new RestaurantRepository(prisma);
 const menuRepository = new MenuRepository(prisma);
-const menuService = new MenuService(menuRepository);
-const menuController = new MenuController(menuService);
+const menuService = new MenuService(menuRepository, restaurantRepository);
+const menuController = new MenuController(menuService, restaurantRepository);
 
 // 메뉴 생성
 menuRouter.post(
-	'/',
-	accessTokenMiddleware,
-	requireRoles([USER_ROLE.MANAGER]),
-	fileUploadMiddleware('menu'),
-	createMenuValidator,
-	menuController.createMenu,
+  '/',
+  accessTokenMiddleware,
+  requireRoles([USER_ROLE.MANAGER]),
+  fileUploadMiddleware('menu'),
+  createMenuValidator,
+  menuController.createMenu,
 );
 
 // 메뉴 수정
-menuRouter.put('/:menuId', accessTokenMiddleware, fileUploadMiddleware('menu'), requireRoles([USER_ROLE.MANAGER]), menuController.updateMenu);
+menuRouter.patch(
+  '/:menuId',
+  accessTokenMiddleware,
+  fileUploadMiddleware('menu'),
+  requireRoles([USER_ROLE.MANAGER]),
+  menuController.updateMenu,
+);
 
 // 메뉴 삭제
-menuRouter.delete('/:menuId', accessTokenMiddleware, fileUploadMiddleware('menu'), requireRoles([USER_ROLE.MANAGER]), menuController.deleteMenu);
+menuRouter.delete(
+  '/:menuId',
+  accessTokenMiddleware,
+  fileUploadMiddleware('menu'),
+  requireRoles([USER_ROLE.MANAGER]),
+  menuController.deleteMenu,
+);
 
 // 메뉴 목록 조회
 menuRouter.get('/', menuController.findAll);

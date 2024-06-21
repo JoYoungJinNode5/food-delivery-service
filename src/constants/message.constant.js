@@ -56,29 +56,24 @@ export const MESSAGES = {
     READ_ME: {
       SUCCEED: '내 정보 조회에 성공했습니다.',
     },
-  },
-  RESUMES: {
-    COMMON: {
-      TITLE: {
-        REQUIRED: '제목을 입력해 주세요.',
-      },
-      CONTENT: {
-        REQUIRED: '자기소개를 입력해 주세요.',
-        // MIN_LENGTH: `자기소개는 ${MIN_RESUME_LENGTH}자 이상 작성해야 합니다.`,
-      },
-      NOT_FOUND: '이력서가 존재하지 않습니다.',
-    },
-  },
-  USERS: {
-    READ_ME: {
-      SUCCEED: '내 정보 조회에 성공했습니다.',
-    },
     NOT_FOUND: '존재하지 않는 유저입니다.',
     UPDATE: {
       ROLE: {
         SUCCEED: '권한 변경에 성공하였습니다.',
         FAILED_ENUM: '권한은 user 혹은 manager로 변경 가능합니다.',
       },
+    },
+  },
+
+  CART: {
+    CREATE: {
+      SUCCEED: '장바구니 항목이 성공적으로 추가되었습니다.',
+    },
+    READ: {
+      SUCCEED: '장바구니 항목 조회에 성공했습니다.',
+    },
+    DELETE: {
+      SUCCEED: '장바구니 항목 삭제에 성공했습니다.',
     },
   },
 

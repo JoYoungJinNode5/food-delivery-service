@@ -31,6 +31,7 @@ model User {
   restaurant   Restaurant?
   refershToken RefreshToken?
   like         Like[]
+  cart         Cart[]
 
   @@map("user")
 }
@@ -59,7 +60,7 @@ model Order {
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
   review        Review?
-  orderItem     OrderItem[]
+  orderitem     OrderItem[]
   user          User            @relation(fields: [userId], references: [id])
   restaurant    Restaurant      @relation(fields: [restaurantId], references: [id])
   restaurantLog RestaurantLog[]
@@ -97,6 +98,7 @@ model Restaurant {
   menu          Menu[]
   restaurantLog RestaurantLog[]
   user          User            @relation(fields: [userId], references: [id])
+  cart          Cart[]
 
   @@map("restaurant")
 }
@@ -147,8 +149,27 @@ model Menu {
 
   restaurant Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   orderItem  OrderItem[]
+  cart       Cart[]
 
   @@map("menu")
+}
+
+model Cart {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("user_id")
+  menuId       Int      @map("menu_id")
+  restaurantId Int      @map("restaurant_id")
+  quantity     Int
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menu            Menu           @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  restaurant      Restaurant     @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  RestaurantLog   RestaurantLog? @relation(fields: [restaurantLogId], references: [id])
+  restaurantLogId Int?
+
+  @@map("cart")
 }
 
 model RestaurantLog {
@@ -161,6 +182,7 @@ model RestaurantLog {
 
   order      Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
   restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  cart       Cart[]
 
   @@map("restaurant_log")
 }

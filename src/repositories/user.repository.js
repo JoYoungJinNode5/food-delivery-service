@@ -9,6 +9,13 @@ export class UserRepository {
     return isExistUser;
   };
 
+  async getUserById(userId) {
+    // getUserById 메서드 추가
+    return await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+  }
+
   createUser = async (email, password, nickname, name, address, profileImg) => {
     const userData = await this.prisma.user.create({
       data: {
