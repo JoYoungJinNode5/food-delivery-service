@@ -1,10 +1,18 @@
-import { prisma } from "../utils/prisma.util.js";
+import { prisma } from '../utils/prisma.util.js';
 
 export class RestaurantRepository {
 	constructor(prisma) {
 		this.prisma = prisma;
 	}
-	// 업장이 이미 있는지 조회
+	findRestaurantByUserId = async (userId) => {
+		return await this.prisma.restaurant.findUnique({
+			where: {
+				userId,
+			}
+		});
+	}
+
+	// 업장이 있는지 조회
 	findRestaurantByRestaurantId = async (restaurantId) => {
 		return await this.prisma.restaurant.findUnique({
 			where: {
@@ -18,7 +26,13 @@ export class RestaurantRepository {
 		// req.body 에 넣은 name, category, address, content, image, openingTime 으로 업장 생성
 		const createdRestaurant = await this.prisma.restaurant.create({
 			data: {
-				name, category, address, content, image, openingTime, userId
+				name,
+				category,
+				address,
+				content,
+				image,
+				openingTime,
+				userId,
 			},
 		});
 
@@ -58,7 +72,7 @@ export class RestaurantRepository {
 			},
 		});
 		return restaurant;
-	}
+	};
 
 	// 키워드 기반 업장 조회
 	findRestaurantByKeyword = async (whereCondition) => {
@@ -66,8 +80,7 @@ export class RestaurantRepository {
 			where: whereCondition,
 		});
 		return restaurants;
-
-	}
+	};
 
 	// 업장 삭제
 	deleteRestaurantById = async (userId, restaurantId) => {
