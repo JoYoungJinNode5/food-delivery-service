@@ -35,15 +35,19 @@ export class RestaurantService {
 	};
 
 	// 업장 정보 수정 서비스
-	updateRestaurant = async (name, category, address, content, restaurantId, image, openingTime) => {
+	updateRestaurant = async (userId, name, category, address, content, restaurantId, image, openingTime) => {
 
-		const updatedRestaurant = await this.restaurantRepository.updatedRestaurant(
-			name, category, address, content, restaurantId, image, openingTime
-		);
+		const existRestaurant = await this.restaurantRepository.findRestaurantByRestaurantId(userId);
 
-		if (!updatedRestaurant) {
+		if (!existRestaurant) {
 			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
 		}
+
+		const updatedRestaurant = await this.restaurantRepository.updatedRestaurant(
+			userId, name, category, address, content, restaurantId, image, openingTime
+		);
+
+
 
 		return {
 			id: updatedRestaurant.id,
@@ -124,12 +128,14 @@ export class RestaurantService {
 	}
 
 	// 업장 삭제 서비스
-	deleteRestaurantById = async (restaurantId) => {
-		const deletedRestaurant = await this.restaurantRepository.deleteRestaurantById(restaurantId);
+	deleteRestaurantById = async (userId, restaurantId) => {
 
-		if (!deletedRestaurant) {
+		const existRestaurant = await this.restaurantRepository.findRestaurantByRestaurantId(restaurantId);
+
+		if (!existRestaurant) {
 			throw new HttpError.NotFound(MESSAGES.RESTAURANT.COMMON.NOT_FOUND);
 		}
+		const deletedRestaurant = await this.restaurantRepository.deleteRestaurantById(userId, restaurantId);
 		return {
 			id: deletedRestaurant.id,
 		};
