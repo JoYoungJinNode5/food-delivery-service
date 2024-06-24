@@ -40,6 +40,8 @@ export class RestaurantController {
 	// 업장 정보 수정 컨트롤러
 	updateRestaurant = async (req, res, next) => {
 		try {
+			const user = req.user;
+			const userId = user.id;
 			// req.body 값에 name, category, address, content 구조 분해 할당
 			const { name, category, address, content, image, openingTime } = req.body;
 			// 파라미터 값 가져오기
@@ -47,7 +49,7 @@ export class RestaurantController {
 
 
 			const updatedRestaurant = await this.restaurantService.updateRestaurant(
-				name, category, address, content, restaurantId, image, openingTime
+				userId, name, category, address, content, restaurantId, image, openingTime
 			);
 
 			return res.status(HTTP_STATUS.OK).json({
@@ -116,8 +118,10 @@ export class RestaurantController {
 		try {
 			// 파라미터 값 가져오기
 			const { restaurantId } = req.params;
+			const user = req.user;
+			const userId = user.id;
 
-			const deletedRestaurant = await this.restaurantService.deleteRestaurantById(restaurantId);
+			const deletedRestaurant = await this.restaurantService.deleteRestaurantById(userId, restaurantId);
 
 			return res.status(HTTP_STATUS.OK).json({
 				status: HTTP_STATUS.OK,
